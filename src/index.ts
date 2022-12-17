@@ -3,6 +3,7 @@ import handleError from "./middlewares/handleError";
 import requestLog from "./middlewares/requestLog";
 import cors from "cors"
 import { prisma } from "./database/index";
+import routes from "./routes/";
 
 async function main() {
     const app = express();
@@ -13,7 +14,7 @@ async function main() {
     const port = process.env.PORT?(process.env.PORT as unknown as number):4000;
     
     app.use(express.json());
-    // app.use(routes);
+    app.use(routes);
     app.use(handleError);
     try {
       await prisma.$connect();

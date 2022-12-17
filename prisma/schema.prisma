@@ -55,11 +55,11 @@ model Place {
   owner_id             String            @db.ObjectId
   name                 String
   places_types         Places_Types[]
-  place_type_number    Int
+  place_type_number    Int[]
   foods_types          Foods_Types[]
-  food_type_number     Int
+  food_type_number     Int[]
   places_profiles      Places_Profiles[]
-  place_profile_number Int
+  place_profile_number Int[]
   city                 String
   state                String
   country              String
