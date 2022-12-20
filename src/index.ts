@@ -11,7 +11,7 @@ async function main() {
     app.use(requestLog);
     app.use(cors())
 
-    const port = process.env.PORT?(process.env.PORT as unknown as number):4000;
+    const port = process.env.PORT?( process.env.PORT as unknown as number) : 4000;
     
     app.use(express.json());
     app.use(routes);

@@ -4,7 +4,7 @@ import placeController from "../controllers/place";
 const routes = express.Router();
 
 routes.get("/", (req:Request, res:Response) =>{
-    return res.json("Api rodando corretamente");
+    return res.json("API MODIFIED");
 });
 
 routes.post("/createplace", placeController.createPlace);
