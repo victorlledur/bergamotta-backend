@@ -1,10 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { isDataView } from "util/types";
 import { prisma } from "../database/index";
 import bcrypt  from "bcrypt"
+import jwt from 'jsonwebtoken'
+
 const secret = process.env.SECRET_KEY as string;
 
 const ownerController = {
+
+    verifyEmail: async function(email: string){
+        return await prisma.owner.findUnique({
+            where: {
+                email
+            }
+        }) ? true : false;
+    },
 
     async store(req: Request, res: Response, next: NextFunction) {
         try {
@@ -17,7 +26,10 @@ const ownerController = {
                 state,
                 country
             } = req.body;
-            
+
+            if( await ownerController.verifyEmail(email) )
+                return res.status(400).send( { message: "This email already exists" } );
+
             const hash = await bcrypt.hash(password, 10)
             
             const newOwner = await prisma.owner.create({
@@ -31,11 +43,11 @@ const ownerController = {
                     country
                 }
             });
-
+            
             return res.status(200).json(newOwner)
 
         } catch (error) {
-            return res.status(400).send({ error: error});
+            return res.status(400).send({ error: error });
         }
     },
 
@@ -51,7 +63,6 @@ const ownerController = {
     async listById(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            // const { password } = req.body;
 
             const ownerId = await prisma.owner.findUnique({
                 where: {
@@ -62,9 +73,6 @@ const ownerController = {
             if (!ownerId) {
                 return res.status(404).json("This ID doesn't exist")
             }
-            // else{
-            //     console.log("password = hash? " + await bcrypt.compare( password, ownerId.password ))
-            // }
 
             return res.status(200).json(ownerId)
 
@@ -97,6 +105,9 @@ const ownerController = {
             if (!ownerId) {
                 return res.status(404).json("This ID doesn't exist")
             }
+
+            if( await ownerController.verifyEmail(email) )
+                return res.status(400).send( { message: "This email already exists" } );
 
             await prisma.owner.update({
                 where: {
