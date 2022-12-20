@@ -8,9 +8,9 @@ routes.get("/", (req: Request, res: Response) => {
 });
 
 routes.post("/createrecipe", recipeController.createRecipe);
-routes.get("/listrecipes", recipeController.listRecipes);
-routes.get("/byidrecipes/:id", recipeController.byIdRecipe);
-routes.put("/updaterecipe/:id", recipeController.updateRecipe);
+routes.get("/recipes", recipeController.listRecipes);
+routes.get("/recipe/:id", recipeController.byIdRecipe);
+routes.put("/recipe/:id", recipeController.updateRecipe);
 routes.delete("/recipe/:id", recipeController.deleteRecipe);
 
 export default routes
