@@ -4,7 +4,7 @@
   "description": "projeto final xp-45",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "dev": "ts-node src/.",
     "start": "npm run build && node -r dotenv/config dist/index.js",
     "build": "tsc"
   },
