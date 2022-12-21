@@ -152,18 +152,7 @@ const placeController = {
         }
     },
 
-    async listPlaceswhere(req: Request, res: Response, next: NextFunction) {
-        try {
-            const listPlaceswhere = await prisma.places_Types.findMany({
-                where: {
-                 place_type_number: 1
-                },                
-               });;
-            res.status(200).json(listPlaceswhere);
-        } catch (error) {
-            next(error);
-        }
-    },
+   
 }
 
 export default placeController
