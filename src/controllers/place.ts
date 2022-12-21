@@ -12,22 +12,19 @@ const placeController = {
 
             const newPlace = await prisma.place.create({
                 data: {
-                    owner_id: owner_id ,
+                    owner_id: owner_id,
                     name: name,
                     place_types: {
-                        connect:{
-                            id: place_types.map((x: any) => ({ id: x }))
-                        },
+                        connect:
+                            place_types.map((x: any) => ({ id: x })),
                     },
                     food_types: {
-                        connect:{
-                            id: food_types.map((x: any) => ({ id: x }))
-                        },
+                        connect:
+                            food_types.map((x: any) => ({ id: x })),
                     },
                     place_profiles: {
-                        connect:{
-                            id: place_profiles.map((x: any) => ({ id: x }))
-                        },
+                        connect:
+                            place_profiles.map((x: any) => ({ id: x })),
                     },
                     city: city,
                     state: state,
