@@ -6,17 +6,26 @@ const placeController = {
 
     async createPlace(req: Request, res: Response, next: NextFunction) {
         try {
-            const { owner_id, name, place_type_number, food_type_number, place_profile_number, city, state, country, zipcode, district, street, place_number, complement, image_link,
+            const { owner_id, name, place_types, food_types, place_profiles, city, state, country, zipcode, district, street, place_number, complement, image_link,
                 capacity, description, phone, payment, latitude, longitude} = req.body;
                 
 
             const newPlace = await prisma.place.create({
                 data: {
-                    owner_id: owner_id ,
+                    owner_id: owner_id,
                     name: name,
-                    place_type_number: place_type_number,
-                    food_type_number: food_type_number,
-                    place_profile_number: place_profile_number,
+                    place_types: {
+                        connect:
+                            place_types.map((x: any) => ({ id: x })),
+                    },
+                    food_types: {
+                        connect:
+                            food_types.map((x: any) => ({ id: x })),
+                    },
+                    place_profiles: {
+                        connect:
+                            place_profiles.map((x: any) => ({ id: x })),
+                    },
                     city: city,
                     state: state,
                     country: country,
@@ -32,7 +41,12 @@ const placeController = {
                     payment: payment,
                     latitude: latitude,
                     longitude: longitude
-                }
+                },
+                include: {
+                    place_types: true,
+                    food_types: true,
+                    place_profiles: true
+                },          
             });
 
             res.status(201).json(newPlace)
@@ -77,7 +91,7 @@ const placeController = {
     async updatePlace(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const { owner_id, name, place_type_number, food_type_number, place_profile_number, city, state, country, zipcode, district, street, place_number, complement, image_link,
+            const { owner_id, name, place_types_ids, food_types_ids, place_profiles_ids, city, state, country, zipcode, district, street, place_number, complement, image_link,
                 capacity, description, phone, payment, latitude, longitude } = req.body;
 
             const place = await prisma.place.findUnique({
@@ -97,9 +111,9 @@ const placeController = {
                 data: {
                     owner_id,
                     name,
-                    place_type_number,
-                    food_type_number,
-                    place_profile_number,
+                    place_types_ids,
+                    food_types_ids,
+                    place_profiles_ids,
                     city,
                     state,
                     country,
@@ -153,6 +167,18 @@ const placeController = {
     },
 
    
+    // async listPlaceswhere(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         const listPlaceswhere = await prisma.places_Types.findMany({
+    //             where: {
+    //              place_type_number: 1
+    //             },                
+    //            });;
+    //         res.status(200).json(listPlaceswhere);
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // },
 }
 
 export default placeController
