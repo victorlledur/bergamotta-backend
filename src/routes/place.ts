@@ -15,4 +15,5 @@ routes.delete("/place/:id", placeController.deletePlace);
 
 // routes.get("/placeswhere", placeController.listPlaceswhere);
 
+
 export default routes;
