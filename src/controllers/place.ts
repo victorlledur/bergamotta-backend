@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
-import axios from "axios";
+import getCoordinates from "../helpers/geocoding";
 
 
 
@@ -10,17 +10,10 @@ const placeController = {
         try {
             const { owner_id, name, place_types, food_types, place_profiles, city, state, country, zipcode, district, street, place_number, complement, image_link,
                 capacity, description, phone, payment, } = req.body;
-
-            const params = {
-                access_key: '457fea3a5240f2f1b30680dc75ef5fca',
-                query: `${place_number} ${street} ${city} ${state}`
-            }
-
-
-            const { data } = await axios.get('https://api.positionstack.com/v1/forward', { params })            
-            const lat = data.results.latitude;
-            const lon = data.results.longitude;
-
+                                    
+                const coordenates: Array<string> = await getCoordinates(`${place_number} ${street} ${city} ${state} ${country}`)
+                const lat = `${coordenates[0]}`;
+                const lon = `${coordenates[1]}`;
 
             const newPlace = await prisma.place.create({
                 data: {
@@ -64,6 +57,7 @@ const placeController = {
             res.status(201).json(newPlace)
 
         } catch (error) {
+            console.log(error)
             next(error)
         }
     },
