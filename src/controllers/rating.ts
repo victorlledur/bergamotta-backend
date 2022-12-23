@@ -7,6 +7,7 @@ const ratingController = {
             const {
                 user_id,
                 place_id,
+                general_rating,
                 welcoming_service,
                 ingredient_substitution,
                 instagrammable_food,
@@ -20,6 +21,7 @@ const ratingController = {
                 data: {
                     user_id: user_id,
                     place_id: place_id,
+                    general_rating: general_rating,
                     welcoming_service: welcoming_service,
                     ingredient_substitution: ingredient_substitution,
                     instagrammable_food: instagrammable_food,
@@ -68,6 +70,7 @@ const ratingController = {
         try {
             const { id } = req.params;
             const {
+                general_rating,
                 welcoming_service,
                 ingredient_substitution,
                 instagrammable_food,
@@ -92,6 +95,7 @@ const ratingController = {
                     id,
                 },
                 data: {
+                    general_rating,
                     welcoming_service,
                     ingredient_substitution,
                     instagrammable_food,
