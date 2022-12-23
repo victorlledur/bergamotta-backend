@@ -115,7 +115,6 @@ model Recipe {
   directions      String
   servings        Int
   total_time      String
-  blog_comment_id String         @db.ObjectId
   blog_comment    Blog_comment[]
 }
 

@@ -7,11 +7,12 @@ const recipeController = {
     async createRecipe(req: Request, res: Response, next: NextFunction) {
         try{
             const{
-                name, ingredients, directions, servings, total_time
+                introduction, name, ingredients, directions, servings, total_time
             } = req.body;
 
             const newRecipe = await prisma.recipe.create({
                 data:{
+                    introduction: introduction,
                     name: name,
                     ingredients: ingredients,
                     directions: directions,
@@ -60,7 +61,7 @@ const recipeController = {
     async updateRecipe(req: Request, res: Response, next: NextFunction){
         try{
             const { id } = req.params;
-            const { name, ingredients, directions, servings, total_time
+            const { introduction, name, ingredients, directions, servings, total_time
             } = req.body;
 
             const recipe = await prisma.recipe.findUnique({
@@ -78,7 +79,7 @@ const recipeController = {
                     id,
                 },
                 data: {
-                    
+                    introduction,
                     name,
                     ingredients,
                     directions,
@@ -91,7 +92,6 @@ const recipeController = {
         } catch (error){
             next( error );
         }
-
     },
 
     async deleteRecipe(req: Request, res: Response, next: NextFunction){
