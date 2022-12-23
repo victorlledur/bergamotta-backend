@@ -9,7 +9,7 @@ const placeController = {
     async createPlace(req: Request, res: Response, next: NextFunction) {
         try {
             const { owner_id, name, place_types, food_types, place_profiles, city, state, country, zipcode, district, street, place_number, complement, image_link,
-                capacity, description, phone, payment, } = req.body;
+                capacity, description, phone,average_ticket_price, payment, } = req.body;
                                     
                 const coordenates: Array<string> = await getCoordinates(`${place_number} ${street} ${city} ${state} ${country}`)
                 const lat = `${coordenates[0]}`;
@@ -43,6 +43,7 @@ const placeController = {
                     capacity: capacity,
                     description: description,
                     phone: phone,
+                    average_ticket_price: average_ticket_price,
                     payment: payment,
                     latitude: lat,
                     longitude: lon
@@ -98,7 +99,7 @@ const placeController = {
         try {
             const { id } = req.params;
             const { owner_id, name, place_types_ids, food_types_ids, place_profiles_ids, city, state, country, zipcode, district, street, place_number, complement, image_link,
-                capacity, description, phone, payment, latitude, longitude } = req.body;
+                capacity, description, phone, average_ticket_price, payment, latitude, longitude } = req.body;
 
             const place = await prisma.place.findUnique({
                 where: {
@@ -132,6 +133,7 @@ const placeController = {
                     capacity,
                     description,
                     phone,
+                    average_ticket_price,
                     payment,
                     latitude,
                     longitude,
@@ -171,20 +173,6 @@ const placeController = {
             next(error)
         }
     },
-
-
-    // async listPlaceswhere(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const listPlaceswhere = await prisma.places_Types.findMany({
-    //             where: {
-    //              place_type_number: 1
-    //             },                
-    //            });;
-    //         res.status(200).json(listPlaceswhere);
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // },
 }
 
 
