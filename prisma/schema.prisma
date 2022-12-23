@@ -21,6 +21,7 @@ model User {
   country      String
   rating       Rating[]
   blog_comment Blog_comment[]
+  favorites    Favorites[]
 }
 
 model Rating {
@@ -77,10 +78,13 @@ model Place {
   description          String
   phone                String
   average_ticket_price String
+  social_media         String
+  opening_hours        String
   payment              String
   latitude             String?
   longitude            String?
   rating               Rating[]
+  favorites            Favorites[]
 }
 
 model Place_Type {
@@ -108,14 +112,14 @@ model Place_Profile {
 }
 
 model Recipe {
-  id              String         @id @default(auto()) @map("_id") @db.ObjectId
-  introduction    String
-  name            String
-  ingredients     String
-  directions      String
-  servings        Int
-  total_time      String
-  blog_comment    Blog_comment[]
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  introduction String
+  name         String
+  ingredients  String
+  directions   String
+  servings     Int
+  total_time   String
+  blog_comment Blog_comment[]
 }
 
 model Blog_comment {
@@ -126,4 +130,12 @@ model Blog_comment {
   recipe    Recipe   @relation(fields: [recipe_id], references: [id])
   user_id   String   @db.ObjectId
   user      User     @relation(fields: [user_id], references: [id])
+}
+
+model Favorites {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  user_id  String @db.ObjectId
+  user     User   @relation(fields: [user_id], references: [id])
+  place_id String @db.ObjectId
+  place    Place  @relation(fields: [place_id], references: [id])
 }

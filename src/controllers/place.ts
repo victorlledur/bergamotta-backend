@@ -9,7 +9,7 @@ const placeController = {
     async createPlace(req: Request, res: Response, next: NextFunction) {
         try {
             const { owner_id, name, place_types, food_types, place_profiles, city, state, country, zipcode, district, street, place_number, complement, image_link,
-                capacity, description, phone,average_ticket_price, payment, } = req.body;
+                capacity, description, phone,average_ticket_price, social_media, opening_hours, payment, } = req.body;
                                     
                 const coordenates: Array<string> = await getCoordinates(`${place_number} ${street} ${city} ${state} ${country}`)
                 const lat = `${coordenates[0]}`;
@@ -44,6 +44,8 @@ const placeController = {
                     description: description,
                     phone: phone,
                     average_ticket_price: average_ticket_price,
+                    social_media: social_media,
+                    opening_hours: opening_hours,
                     payment: payment,
                     latitude: lat,
                     longitude: lon
@@ -99,7 +101,7 @@ const placeController = {
         try {
             const { id } = req.params;
             const { owner_id, name, place_types_ids, food_types_ids, place_profiles_ids, city, state, country, zipcode, district, street, place_number, complement, image_link,
-                capacity, description, phone, average_ticket_price, payment, latitude, longitude } = req.body;
+                capacity, description, phone, average_ticket_price, social_media, opening_hours, payment, latitude, longitude } = req.body;
 
             const place = await prisma.place.findUnique({
                 where: {
@@ -134,6 +136,8 @@ const placeController = {
                     description,
                     phone,
                     average_ticket_price,
+                    social_media,
+                    opening_hours,
                     payment,
                     latitude,
                     longitude,
