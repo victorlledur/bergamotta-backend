@@ -1,19 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
 import bcrypt  from "bcrypt"
-import jwt from 'jsonwebtoken'
+import verifyEmail from "../helpers/emailcheck"
 
 const secret = process.env.SECRET_KEY as string;
 
-const ownerController = {
-
-    verifyEmail: async function(email: string){
-        return await prisma.owner.findUnique({
-            where: {
-                email
-            }
-        }) ? true : false;
-    },
+const ownerController = {    
 
     async store(req: Request, res: Response, next: NextFunction) {
         try {
@@ -22,12 +14,14 @@ const ownerController = {
                 email,
                 password,
                 image_link,
+                cnpj,
+                role,
                 city,
                 state,
                 country
             } = req.body;
 
-            if( await ownerController.verifyEmail(email) )
+            if( await verifyEmail(email) )
                 return res.status(400).send( { message: "This email already exists" } );
 
             const hash = await bcrypt.hash(password, 10)
@@ -38,6 +32,8 @@ const ownerController = {
                     email,
                     password: hash,
                     image_link,
+                    cnpj,
+                    role,
                     city,
                     state,
                     country
@@ -91,6 +87,8 @@ const ownerController = {
                 email,
                 password,
                 image_link,
+                cnpj,
+                role,
                 city,
                 state,
                 country
@@ -106,7 +104,7 @@ const ownerController = {
                 return res.status(404).json("This ID doesn't exist")
             }
 
-            if( await ownerController.verifyEmail(email) )
+            if( await verifyEmail(email) )
                 return res.status(400).send( { message: "This email already exists" } );
 
             await prisma.owner.update({
@@ -118,6 +116,8 @@ const ownerController = {
                     email,
                     password,
                     image_link,
+                    cnpj,
+                    role,
                     city,
                     state,
                     country

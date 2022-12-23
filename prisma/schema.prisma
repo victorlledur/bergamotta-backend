@@ -11,19 +11,21 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  email      String   @unique
-  password   String
-  image_link String?
-  city       String
-  state      String
-  country    String
-  rating     Rating[]
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String         @unique
+  password     String
+  image_link   String?
+  city         String
+  state        String
+  country      String
+  rating       Rating[]
+  blog_comment Blog_comment[]
 }
 
 model Rating {
   id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  general_rating          Int?
   welcoming_service       Boolean?
   ingredient_substitution Boolean?
   instagrammable_food     Boolean?
@@ -43,6 +45,8 @@ model Owner {
   email      String  @unique
   password   String
   image_link String?
+  cnpj       String
+  role       String
   city       String
   state      String
   country    String
@@ -50,32 +54,33 @@ model Owner {
 }
 
 model Place {
-  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
-  owner              Owner           @relation(fields: [owner_id], references: [id])
-  owner_id           String          @db.ObjectId
-  name               String
-  place_types        Place_Type[]    @relation(fields: [place_types_ids], references: [id])
-  place_types_ids    String[]        @db.ObjectId
-  food_types         Food_Type[]     @relation(fields: [food_types_ids], references: [id])
-  food_types_ids     String[]        @db.ObjectId
-  place_profiles     Place_Profile[] @relation(fields: [place_profiles_ids], references: [id])
-  place_profiles_ids String[]        @db.ObjectId
-  city               String
-  state              String
-  country            String
-  zipcode            String
-  district           String
-  street             String
-  place_number       String
-  complement         String?
-  image_link         String
-  capacity           Int
-  description        String
-  phone              String
-  payment            String
-  latitude           String?
-  longitude          String?
-  rating             Rating[]
+  id                   String          @id @default(auto()) @map("_id") @db.ObjectId
+  owner                Owner           @relation(fields: [owner_id], references: [id])
+  owner_id             String          @db.ObjectId
+  name                 String
+  place_types          Place_Type[]    @relation(fields: [place_types_ids], references: [id])
+  place_types_ids      String[]        @db.ObjectId
+  food_types           Food_Type[]     @relation(fields: [food_types_ids], references: [id])
+  food_types_ids       String[]        @db.ObjectId
+  place_profiles       Place_Profile[] @relation(fields: [place_profiles_ids], references: [id])
+  place_profiles_ids   String[]        @db.ObjectId
+  city                 String
+  state                String
+  country              String
+  zipcode              String
+  district             String
+  street               String
+  place_number         String
+  complement           String?
+  image_link           String
+  capacity             Int
+  description          String
+  phone                String
+  average_ticket_price String
+  payment              String
+  latitude             String?
+  longitude            String?
+  rating               Rating[]
 }
 
 model Place_Type {
@@ -103,10 +108,23 @@ model Place_Profile {
 }
 
 model Recipe {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  ingredients String
-  directions  String
-  servings    Int
-  total_time  String
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  introduction    String
+  name            String
+  ingredients     String
+  directions      String
+  servings        Int
+  total_time      String
+  blog_comment_id String         @db.ObjectId
+  blog_comment    Blog_comment[]
+}
+
+model Blog_comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  comment   String
+  date      DateTime
+  recipe_id String   @db.ObjectId
+  recipe    Recipe   @relation(fields: [recipe_id], references: [id])
+  user_id   String   @db.ObjectId
+  user      User     @relation(fields: [user_id], references: [id])
 }
