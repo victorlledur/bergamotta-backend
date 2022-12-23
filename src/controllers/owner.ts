@@ -7,7 +7,7 @@ const secret = process.env.SECRET_KEY as string;
 
 const ownerController = {    
 
-    async store(req: Request, res: Response, next: NextFunction) {
+    async createOwner(req: Request, res: Response, next: NextFunction) {
         try {
             const { 
                 name,
@@ -47,7 +47,7 @@ const ownerController = {
         }
     },
 
-    async listAll(req: Request, res: Response, next: NextFunction) {
+    async listOwners(req: Request, res: Response, next: NextFunction) {
         try {
             const list = await prisma.owner.findMany();
             return res.status(200).json(list);
@@ -56,7 +56,7 @@ const ownerController = {
         }
     },
 
-    async listById(req: Request, res: Response, next: NextFunction) {
+    async byIdOwner(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
 
@@ -78,7 +78,7 @@ const ownerController = {
 
     },
 
-    async update(req: Request, res: Response, next: NextFunction) {
+    async updateOwner(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
 
@@ -130,7 +130,7 @@ const ownerController = {
         }
     },
 
-    async remove(req: Request, res: Response, next: NextFunction) {
+    async deleteOwner(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
 
