@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
-
+import bcrypt  from "bcrypt"
+import verifyEmail from "../helpers/emailcheck"
 
 const userController = {
 
