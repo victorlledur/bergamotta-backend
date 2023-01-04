@@ -140,6 +140,7 @@ model Recipe {
   id           String         @id @default(auto()) @map("_id") @db.ObjectId
   introduction String
   name         String
+  image_link   String
   ingredients  String
   directions   String
   servings     Int
