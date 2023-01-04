@@ -10,7 +10,6 @@ export const validateToken = {
 
     if (!mailToken) {
       try {
-
         if (!headersToken) {
           return res.status(401).send({ error: 'No token provided!' })
         }
@@ -24,39 +23,43 @@ export const validateToken = {
 
         if (!/^Bearer$/.test(scheme))
           return res.status(401).send({ error: 'Is not a bearer token' })
-          jwt.verify(token, secret, async (err: any, decoded: any) => {
-            const { id } = req.params
-            
-            if (err) 
-              return res.status(401).send({ error: err.message })
+        jwt.verify(token, secret, async (err: any, decoded: any) => {
+          const { id } = req.params
 
-            try {
-              const findUser = await prisma.owner.findUnique({
-                where: {
-                  id,
-                },
+          if (err) return res.status(401).send({ error: err.message })
+
+          try {
+            const findUser = await prisma.owner.findUnique({
+              where: {
+                id,
+              },
+            })
+
+            if (!findUser) return res.sendStatus(401)
+
+            if (!decoded.id)
+              return res.status(401).send({ error: 'No ID available' })
+
+            if (decoded.id !== id || decoded.email !== findUser.email)
+              return res.status(200).send({
+                error: 'This Token has not belong to the specified payload',
               })
-    
-              if (!findUser) return res.sendStatus(401)
-              
-              if (!decoded.id)
-                return res.status(401).send({ error: 'No ID available' })
-    
-              if (decoded.id !== id || decoded.email !== findUser.email)
-                return res.status(200).send({
-                  error: 'This Token has not belong to the specified payload',
-                })
 
-              if (Number(findUser.passwordExpired) < Date.now())
-                return res.status(200).send({ error: 'password expired' })
-    
-              console.log('Authenticate via headers!')
-    
-              return next()
-            } catch (error: any) {
-              return res.status(401).send({ error: error.message })
-            }
-          })
+
+            // if (findUser.password !== decoded.password) {
+            //   if (Number(findUser.passwordExpired) < Date.now()) {
+            //     return res.status(200).send({ error: 'password expired' })
+            //   }
+            //   return res.status(401).send({ error: 'password mismatch' })
+            // }
+
+            console.log('Authenticate via headers!')
+
+            return next()
+          } catch (error: any) {
+            return res.status(401).send({ error: error.message })
+          }
+        })
       } catch (error: any) {
         return res.status(401).send({ error: error.message })
       }
@@ -81,8 +84,12 @@ export const validateToken = {
               error: 'This Token has not belong to the specified payload',
             })
 
-          if (!(findUser.passwordExpired! > Date.now()))
-            return res.status(200).send({ error: 'password expired' })
+          // if (findUser.password !== decoded.password) {
+          //   if (Number(findUser.passwordExpired) < Date.now()) {
+          //     return res.status(200).send({ error: 'password expired' })
+          //   }
+          //   return res.status(401).send({ error: 'password mismatch' })
+          // }
 
           console.log('Authenticate via params!')
 
@@ -94,4 +101,3 @@ export const validateToken = {
     }
   },
 }
-

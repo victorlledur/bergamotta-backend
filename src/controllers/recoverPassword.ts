@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express'
 import { prisma } from '../database/index'
 import bcrypt from 'bcrypt'
 import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
-import verifyEmail from '../helpers/emailcheck'
 import crypto from 'crypto'
 import { mailerConfig } from '../modules/mailer'
 
@@ -20,16 +19,12 @@ const recoverPassword = {
       if (!ownerEmail) 
         return res.status(400).send({ error: 'owner not found' })
 
-    // if (!(await verifyEmail(email)))
-        // return res.status(400).send({ error: 'owner not found' })
-
-      const newHashPass = crypto.randomBytes(20).toString('hex')
+      const newHashPass = crypto.randomBytes(20).toString('hex').substring(0,10)
       const passwordReset = crypto
         .createHash('sha256')
         .update(newHashPass)
         .digest('hex')
-      const passwordExpired = Date.now() + 1000 * 60 * 20
-      console.log('passwordReset :>> ', passwordReset);
+      const passwordExpired = Date.now() + 1000 * 60 * 20 // password expira em 20 minutos
       
       await prisma.owner.update({
         where: {
@@ -45,11 +40,10 @@ const recoverPassword = {
         id: ownerEmail.id,
         name: ownerEmail.name,
         email: ownerEmail.email,
+        password: newHashPass,
         passwordReset,
         passwordExpired,
       })
-
-      console.log('token :>> ', token);
 
       mailerConfig.mailer(token)
 

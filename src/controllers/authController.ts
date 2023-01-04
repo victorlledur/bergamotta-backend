@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import { prisma } from '../database/index'
 import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
-import jwt from 'jsonwebtoken'
+
 const authController = {
 
   async authUser(req: Request, res: Response, next: NextFunction) {
@@ -26,6 +26,7 @@ const authController = {
         token: decodeAndGenerateToken.generateToken({
           id: findUser.id,
           name: findUser.name,
+          email: findUser.email,
           password: findUser.password,
         }),
       })
@@ -43,7 +44,9 @@ const authController = {
           token: decodeAndGenerateToken.generateToken({
             id: findUser.id,
             name: findUser.name,
-            passwordReset: findUser.passwordReset
+            email: findUser.email,
+            passwordReset: findUser.passwordReset,
+            passwordExpired: findUser.passwordExpired
           }),
         })
     }

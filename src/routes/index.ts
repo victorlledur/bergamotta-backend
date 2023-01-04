@@ -16,8 +16,8 @@ routes.use(ownerRoutes);
 routes.use(authentication);
 routes.use(recipeRoutes);
 routes.use(ratingRoutes);
-routes.use(blogCommentRoutes)
-routes.use(favoritesRoutes)
-routes.use(recoverPassword)
+routes.use(blogCommentRoutes);
+routes.use(favoritesRoutes);
+routes.use(recoverPassword);
 
 export default routes;
