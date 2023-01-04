@@ -16,6 +16,7 @@ async function main() {
     app.use(express.json());
     app.use(routes);
     app.use(handleError);
+    
     try {
       await prisma.$connect();
       console.log(`😄 Connected successfuly to the database!`);

@@ -7,7 +7,7 @@ import recipeRoutes from "./recipe"
 import ratingRoutes from "./rating"
 import blogCommentRoutes from "./blogComent"
 import favoritesRoutes from "./favorites"
-
+import recoverPassword from "./recoverPassword";
 const routes = Router();
 
 routes.use(placeRoutes);
@@ -18,6 +18,6 @@ routes.use(recipeRoutes);
 routes.use(ratingRoutes);
 routes.use(blogCommentRoutes)
 routes.use(favoritesRoutes)
-
+routes.use(recoverPassword)
 
 export default routes;

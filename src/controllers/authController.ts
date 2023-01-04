@@ -1,43 +1,40 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import bcrypt  from "bcrypt";
-import { prisma } from "../database/index"
-const secret = process.env.SECRET_KEY as string;
-
+import { Request, Response, NextFunction } from 'express'
+import bcrypt from 'bcrypt'
+import { prisma } from '../database/index'
+import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
+import jwt from 'jsonwebtoken'
 const authController = {
 
-    generateToken: function(params = {}){
-        return jwt.sign(params, secret, {
-            expiresIn: "2h"
-        });
-    },
+  async authUser(req: Request, res: Response, next: NextFunction) {
+    const { email, password } = req.body
 
-    async authUser(req: Request, res: Response, next: NextFunction){
-        const { email, password } = req.body
-        const findUser =  await prisma.owner.findUnique({
-            where: {
-                email
-            }
-        })
-         
-        if( !findUser ){
-            return res.status(403).send({ message: 'User or password incorrect. Please, try again!' })
-        }
+    const findUser = await prisma.owner.findUnique({
+      where: {
+        email,
+      },
+    })
 
-        if( !await bcrypt.compare(password, findUser.password )){
-            return res.status(403).send({ message: 'User or password incorrect. Please, try again!' })
-        }
+    if (!findUser) {
+      return res
+        .status(403)
+        .send({ message: 'User or password incorrect. Please, try again!' })
+    }
 
-        return res.status(200).send({
-            findUser,
-            token: authController.generateToken({ 
-                id: findUser.id, 
-                name: findUser.name, 
-                email: findUser.email,
-            })
-        })
-        
-    },
+    if (!(await bcrypt.compare(password, findUser.password))) {
+      return res
+        .status(403)
+        .send({ message: 'User or password incorrect. Please, try again!' })
+    }
+
+    return res.status(200).send({
+      findUser,
+      token: decodeAndGenerateToken.generateToken({
+        id: findUser.id,
+        name: findUser.name,
+        email: findUser.email,
+      }),
+    })
+  },
 }
 
-export default authController;
+export default authController
