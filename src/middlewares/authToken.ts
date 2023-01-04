@@ -10,6 +10,7 @@ export const validateToken = {
 
     if (!mailToken) {
       try {
+
         if (!headersToken) {
           return res.status(401).send({ error: 'No token provided!' })
         }
@@ -23,28 +24,39 @@ export const validateToken = {
 
         if (!/^Bearer$/.test(scheme))
           return res.status(401).send({ error: 'Is not a bearer token' })
-        
-        jwt.verify(token, secret, (err: any, decoded: any) => {
-          if (err)
-            return res
-              .status(401)
-              .send({ error: 'This token expired or was not valid' })
+          jwt.verify(token, secret, async (err: any, decoded: any) => {
+            const { id } = req.params
+            
+            if (err) 
+              return res.status(401).send({ error: err.message })
 
-          if (!decoded.id)
-            return res.status(401).send({ error: 'No id available' })
+            try {
+              const findUser = await prisma.owner.findUnique({
+                where: {
+                  id,
+                },
+              })
+    
+              if (!findUser) return res.sendStatus(401)
+              
+              if (!decoded.id)
+                return res.status(401).send({ error: 'No ID available' })
+    
+              if (decoded.id !== id || decoded.email !== findUser.email)
+                return res.status(200).send({
+                  error: 'This Token has not belong to the specified payload',
+                })
 
-          if (decoded.id !== req.params.id) {
-            console.log('decoded.id ', decoded.id)
-            console.log('req.params.id', req.params.id)
-
-            return res
-              .status(200)
-              .send({ error: 'This Token has not belong to the specified ID' })
-          }
-
-          console.log('Authenticate!')
-          return next()
-        })
+              if (Number(findUser.passwordExpired) < Date.now())
+                return res.status(200).send({ error: 'password expired' })
+    
+              console.log('Authenticate via headers!')
+    
+              return next()
+            } catch (error: any) {
+              return res.status(401).send({ error: error.message })
+            }
+          })
       } catch (error: any) {
         return res.status(401).send({ error: error.message })
       }
@@ -61,7 +73,6 @@ export const validateToken = {
           })
 
           if (!findUser) return res.sendStatus(401)
-
           if (!decoded.id)
             return res.status(401).send({ error: 'No ID available' })
 
@@ -70,7 +81,7 @@ export const validateToken = {
               error: 'This Token has not belong to the specified payload',
             })
 
-          if (!(findUser.passwordExpired > Date.now()))
+          if (!(findUser.passwordExpired! > Date.now()))
             return res.status(200).send({ error: 'password expired' })
 
           console.log('Authenticate via params!')
@@ -84,21 +95,3 @@ export const validateToken = {
   },
 }
 
-// const findUser = await User.findOne({ email: decoded.email })
-// console.log(">>>>>>>>>>>"+findUser?.email)
-
-// if (err)
-//     return res.status(401).send({ error: 'This token expired or was not valid'});
-
-// if(!(decoded.email || decoded.password))
-//     return res.status(401).send({ error: 'No email or password was provided in the token'});
-
-// if(!findUser)
-//     return res.status(401).send({ error: 'No user found'});
-
-// if(decoded.email !== findUser.email || decoded.password !== findUser.password)
-//     return res.status(200).send({ error: 'This token has not belong to the specified User'})
-
-// console.log("Authenticate user!");
-// // console.log({Method: req.method, decoded})
-// return next()

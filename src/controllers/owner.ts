@@ -28,7 +28,6 @@ const ownerController = {
 
       return res.status(200).json(newOwner)
     } catch (error) {
-      console.log(error)
       return res.status(400).send({ error: error })
     }
   },
@@ -37,8 +36,8 @@ const ownerController = {
     try {
       const list = await prisma.owner.findMany()
     //   const list2 = list.map( x =>  x.city )
-    const list2 = list.slice( 0, 2)
-      return res.status(200).json(list2)
+    // const list2 = list.slice( 0, 2)
+      return res.status(200).json(list)
     } catch (error) {
       return res.status(400).send({ error: error })
     }

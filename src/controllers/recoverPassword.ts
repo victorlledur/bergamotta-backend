@@ -7,6 +7,7 @@ import crypto from 'crypto'
 import { mailerConfig } from '../modules/mailer'
 
 const recoverPassword = {
+
   async forgetPassword(req: Request, res: Response) {
     const { email } = req.body
     try {
@@ -64,6 +65,7 @@ const recoverPassword = {
   async resetPassword(req: Request, res: Response) {
     try {
       const { password } = req.body
+
       const { id } = req.params
       const ownerId = await prisma.owner.findUnique({
         where: {
@@ -71,8 +73,9 @@ const recoverPassword = {
         },
       })
 
-      if (!ownerId) return res.status(400).send({ error: 'owner not found' })
-      console.log('req.method :>> ', req.method);
+      if (!ownerId) 
+        return res.status(400).send({ error: 'owner not found' })
+        
       if (req.method === 'PUT') {
         const hash = await bcrypt.hash(password, 10)
 
@@ -80,9 +83,10 @@ const recoverPassword = {
           where: {
             id,
           },
-
+          
           data: {
-            password: hash,
+            password: hash
+            ,
           },
         })
         return res.sendStatus(200)
