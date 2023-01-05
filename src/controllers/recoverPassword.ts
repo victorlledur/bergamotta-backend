@@ -79,8 +79,9 @@ const recoverPassword = {
           },
           
           data: {
-            password: hash
-            ,
+            password: hash,
+            passwordReset: null,
+            passwordExpired: null
           },
         })
         return res.sendStatus(200)

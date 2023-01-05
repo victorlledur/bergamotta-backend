@@ -56,29 +56,6 @@ model Owner {
   Place           Place[]
 }
 
-// model Owner {
-//   id             String           @id @default(auto()) @map("_id") @db.ObjectId
-//   name           String
-//   email          String           @unique
-//   password       String
-//   image_link     String?
-//   cnpj           String
-//   role           String
-//   city           String
-//   state          String
-//   country        String
-//   place          Place[]
-//   forgotPassword ForgotPassword[] 
-// }
-
-// model ForgotPassword {
-//   id              String  @id @default(auto()) @map("_id") @db.ObjectId
-//   passwordReset   String
-//   passwordExpired String
-//   Owner           Owner?  @relation(fields: [ownerId], references: [id])
-//   ownerId         String? @db.ObjectId
-// }
-
 model Place {
   id                   String          @id @default(auto()) @map("_id") @db.ObjectId
   owner                Owner           @relation(fields: [owner_id], references: [id])

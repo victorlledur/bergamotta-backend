@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { prisma } from '../database/index'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import verifyEmail from '../helpers/emailcheck'
 import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
-
-const secret = process.env.SECRET_KEY as string
 
 const ownerController = {
   async verifyPassword(password: string) {
@@ -46,9 +43,14 @@ const ownerController = {
   async listOwners(req: Request, res: Response, next: NextFunction) {
     try {
       const list = await prisma.owner.findMany()
-    //   const list2 = list.map( x =>  x.city )
-    // const list2 = list.slice( 0, 2)
-      return res.status(200).json(list)
+      let newList = [{}];
+
+      for (const item in list) {
+        const { passwordReset, passwordExpired, ...owner } = list[item]
+        newList.push(owner)
+      } //para não exibir a senha resete e expired
+      
+      return res.status(200).json(newList)
     } catch (error) {
       return res.status(400).send({ error: error })
     }
@@ -68,7 +70,9 @@ const ownerController = {
         return res.status(404).json("This ID doesn't exist")
       }
 
-      return res.status(200).json(ownerId)
+      const { passwordReset, passwordExpired, ...owner } = ownerId //para não exibir a senha resete e expired
+      
+      return res.status(200).json(owner)
     } catch (error) {
       return res.status(400).json({ error: error })
     }
@@ -78,18 +82,6 @@ const ownerController = {
     try {
       const { id } = req.params
 
-      // const {
-      //   name,
-      //   email,
-      //   password,
-      //   image_link,
-      //   cnpj,
-      //   role,
-      //   city,
-      //   state,
-      //   country,
-      // } = req.body
-      
       const ownerId = await prisma.owner.findUnique({
         where: {
           id,

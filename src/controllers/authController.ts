@@ -17,7 +17,7 @@ const authController = {
     if (!findUser) {
       return res
         .status(403)
-        .send({ message: 'User or password incorrect. Please, try again!' })
+        .send({ message: 'user or password incorrect. Please, try again!' })
     }
 
     if (await bcrypt.compare(password, findUser.password)) {
@@ -31,12 +31,13 @@ const authController = {
         }),
       })
     }
+    
     if (findUser.passwordReset && findUser.passwordExpired){
       if (findUser.passwordExpired < Date.now()){
-        return res.status(401).send({error: "the password has expired"})
+        return res.status(401).send({error: "the provide password has expired"})
       }
-      if (findUser.passwordReset !== password){
-        return res.status(401).send({error: "the password is incorrect"})
+      if (findUser.passwordReset !== password ){ 
+        return res.status(401).send({error: "the provide password is incorrect"})
       }
 
         return res.status(200).json({
