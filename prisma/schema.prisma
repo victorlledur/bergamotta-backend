@@ -117,11 +117,12 @@ model Recipe {
   id           String         @id @default(auto()) @map("_id") @db.ObjectId
   introduction String
   name         String
+  subtitle     String
   image_link   String
   ingredients  String
   directions   String
-  servings     Int
-  total_time   String
+  servings     Int?
+  total_time   String?
   blog_comment Blog_comment[]
 }
 
