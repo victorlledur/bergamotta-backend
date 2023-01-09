@@ -22,6 +22,9 @@ model User {
   rating       Rating[]
   blog_comment Blog_comment[]
   favorites    Favorites[]
+  passwordReset String?
+  passwordExpired Int?
+
 }
 
 model Rating {
