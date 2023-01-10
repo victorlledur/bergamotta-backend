@@ -15,34 +15,34 @@ const userController = {
 
     async createUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const { name, email, password, image_link, city, state, country } = req.body;
-
-            if (await verifyEmail(email))
-                return res.status(400).send({ message: 'This email already exists' })
-
-            const hash = await bcrypt.hash(password, 10)
-
-            const newUser = await prisma.user.create({
-                data: { ...req.body, password: hash },
+          const { email, password } = req.body
+    
+          if (await verifyEmail(email))
+            return res.status(400).send({ message: 'This email already exists' })
+    
+          const hash = await bcrypt.hash(password, 10)
+    
+          const newUser = await prisma.user.create({
+            data: { ...req.body, password: hash },
+          })
+    
+          return res.status(201).json({
+            newUser,
+            token: decodeAndGenerateToken.generateToken({
+                id: newUser.id,
+                name: newUser.name,
+                email: newUser.email,
+                password: newUser.password,
+                image_link: newUser.image_link,
+                city: newUser.city,
+                state: newUser.state,
+                country: newUser.country,
             })
-
-            res.status(201).json({
-                newUser,
-                token: decodeAndGenerateToken.generateToken({
-                    name: newUser.name,
-                    email: newUser.email,
-                    password: newUser.password,
-                    image_link: newUser.image_link,
-                    city: newUser.city,
-                    state: newUser.state,
-                    country: newUser.country,
-                })
-            })
-
+        })
         } catch (error) {
-            next(error)
+          return res.status(400).send({ error: error })
         }
-    },
+      },
 
     async listUsers(req: Request, res: Response, next: NextFunction) {
         try {
@@ -54,107 +54,105 @@ const userController = {
                 newList.push(user)
             } //para não exibir a senha resete e expired
 
-            res.status(200).json(listUsers);
+            return res.status(200).json(listUsers);
         } catch (error) {
-            next(error);
+            return res.status(400).send({ error: error })
         }
     },
 
     async byIdUser(req: Request, res: Response, next: NextFunction) {
         try {
-
-            const { id } = req.params;
-
+            const { id } = req.params
+            
             const userId = await prisma.user.findUnique({
                 where: {
-                    id,
-                }
-            });
+                  id,
+                },
+            })
 
             if (!userId) {
-                res.status(404).json("User not found")
+                return res.status(404).json("User not found")
             };
 
             const { passwordReset, passwordExpired, ...user } = userId //para não exibir a senha resete e expired
 
             return res.status(200).json(user)
-
         } catch (error) {
-            next(error)
+          return res.status(400).json({ error: error })
         }
 
     },
 
     async updateUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id } = req.params;
-            const { name, email, password, image_link, city, state, country } = req.body;
-
-            const user = await prisma.user.findUnique({
-                where: {
-                    id,
-                }
-            });
-
-            if (!user) {
-                res.status(400).json("User not found")
-            };
-
-            if (req.body.email) {
-                if (await verifyEmail(req.body.email))
-                    return res.status(400).send({ message: 'This email already exists' })
-            }
-
-            const updated = await prisma.user.update({
-                where: {
-                    id,
-                },
-                data: {
-                    name,
-                    email,
-                    password,
-                    image_link,
-                    city,
-                    state,
-                    country,
-                },
-            });
-
-            res.status(200).json({ result: updated })
+          const { id } = req.params
+    
+          const userId = await prisma.user.findUnique({
+            where: {
+              id,
+            },
+          })
+    
+          if (!userId) {
+            return res.status(404).json("This ID doesn't exist")
+          }
+    
+          if (req.body.email) {
+            if (await verifyEmail(req.body.email))
+              return res.status(400).send({ message: 'This email already exists' })
+          }
+    
+          await prisma.user.update({
+            where: {
+              id,
+            },
+            data: {
+              ...req.body,
+              password: await userController.verifyPassword(req.body.password),
+            },
+          })
+    
+          return res.status(200).json({
+            userId,
+            token: decodeAndGenerateToken.generateToken({
+              id: userId.id,
+              name: userId.name,
+              email: userId.email,
+              password: userId.password,
+              passwordReset: userId.passwordReset,
+              passwordExpired: userId.passwordExpired,
+            }),
+          })
         } catch (error) {
-            next(error)
-
+          return res.status(400).json({ error: error })
         }
-    },
+      },
 
-    async deleteUser(req: Request, res: Response, next: NextFunction) {
+      async deleteUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id } = req.params;
-
-            const user = await prisma.user.findUnique({
-                where: {
-                    id,
-                }
-            });
-
-            if (!user) {
-                return res.status(404).json("User not found")
-            };
-
-            await prisma.user.delete({
-                where: {
-                    id,
-                },
-            });
-
-            res.sendStatus(204)
-
+          const { id } = req.params
+    
+          const userId = await prisma.user.findUnique({
+            where: {
+              id,
+            },
+          })
+    
+          if (!userId) {
+            return res.status(404).json("This ID doesn't exist")
+          }
+    
+          await prisma.user.delete({
+            where: {
+              id,
+            },
+          })
+    
+          return res.sendStatus(200)
         } catch (error) {
-            next(error)
+          return res.status(400).json({ error: error })
         }
-    },
-
-
+      },
 }
 
 export default userController
