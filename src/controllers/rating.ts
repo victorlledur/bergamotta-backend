@@ -168,6 +168,200 @@ const ratingController = {
                 next(error);
             }
         },
+
+        async welcomingServiceById(req: Request, res: Response, next: NextFunction) {
+            try {
+                const { id } = req.params;
+
+                const dataTrue = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        welcoming_service: true
+                    },                    
+                });
+
+                const dataFalse = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        welcoming_service: false
+                    },                    
+                });
+
+                let dataResults = ""
+
+                if(dataFalse >= dataTrue){
+                    dataResults = "bad"
+                }else{
+                    dataResults = "good"
+                }
+
+                res.status(200).json(dataResults);
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        async ingredientSubstitutionById(req: Request, res: Response, next: NextFunction) {
+            try {
+                const { id } = req.params;
+
+                const dataTrue = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        ingredient_substitution: true
+                    },                    
+                });
+
+                const dataFalse = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        ingredient_substitution: false
+                    },                    
+                });
+
+                let dataResults = ""
+
+                if(dataFalse >= dataTrue){
+                    dataResults = "bad"
+                }else{
+                    dataResults = "good"
+                }
+
+                res.status(200).json(dataResults);
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        async instagrammableFoodById(req: Request, res: Response, next: NextFunction) {
+            try {
+                const { id } = req.params;
+
+                const dataTrue = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        instagrammable_food: true
+                    },                    
+                });
+
+                const dataFalse = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        instagrammable_food: false
+                    },                    
+                });
+
+                let dataResults = ""
+
+                if(dataFalse >= dataTrue){
+                    dataResults = "bad"
+                }else{
+                    dataResults = "good"
+                }
+
+                res.status(200).json(dataResults);
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        async tastyFoodById(req: Request, res: Response, next: NextFunction) {
+            try {
+                const { id } = req.params;
+
+                const dataTrue = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        tasty_food: true
+                    },                    
+                });
+
+                const dataFalse = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        tasty_food: false
+                    },                    
+                });
+
+                let dataResults = ""
+
+                if(dataFalse >= dataTrue){
+                    dataResults = "bad"
+                }else{
+                    dataResults = "good"
+                }
+
+                res.status(200).json(dataResults);
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        async cozyById(req: Request, res: Response, next: NextFunction) {
+            try {
+                const { id } = req.params;
+
+                const dataTrue = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        cozy: true
+                    },                    
+                });
+
+                const dataFalse = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        cozy: false
+                    },                    
+                });
+
+                let dataResults = ""
+
+                if(dataFalse >= dataTrue){
+                    dataResults = "bad"
+                }else{
+                    dataResults = "good"
+                }
+
+                res.status(200).json(dataResults);
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        async serviceSpeed(req: Request, res: Response, next: NextFunction) {
+            try {
+                const { id } = req.params;
+
+                const dataTrue = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        service_speed: true
+                    },                    
+                });
+
+                const dataFalse = await prisma.rating.count({
+                    where: {
+                        place_id: id,
+                        service_speed: false
+                    },                    
+                });
+
+                let dataResults = ""
+
+                if(dataFalse >= dataTrue){
+                    dataResults = "bad"
+                }else{
+                    dataResults = "good"
+                }
+
+                res.status(200).json(dataResults);
+            } catch (error) {
+                next(error);
+            }
+        },
+
+        
     };
 
     export default ratingController;
