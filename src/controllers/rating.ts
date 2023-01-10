@@ -5,8 +5,6 @@ const ratingController = {
     async createRating(req: Request, res: Response, next: NextFunction) {
         try {
             const {
-                user_id,
-                place_id,
                 general_rating,
                 welcoming_service,
                 ingredient_substitution,
@@ -15,12 +13,12 @@ const ratingController = {
                 cozy,
                 service_speed,
                 comment,
+                user_id,
+                place_id,
             } = req.body;
 
             const newRating = await prisma.rating.create({
                 data: {
-                    user_id: user_id,
-                    place_id: place_id,
                     general_rating: general_rating,
                     welcoming_service: welcoming_service,
                     ingredient_substitution: ingredient_substitution,
@@ -29,8 +27,11 @@ const ratingController = {
                     cozy: cozy,
                     service_speed: service_speed,
                     comment: comment,
+                    user_id: user_id,
+                    place_id: place_id,
                 },
             });
+
             res.status(201).json(newRating);
         } catch (error) {
             next(error);
