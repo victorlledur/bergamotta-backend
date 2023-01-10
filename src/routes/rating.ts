@@ -8,5 +8,8 @@ routes.get("/ratings", ratingController.listRatings);
 routes.get("/rating/:id", ratingController.byIdRating);
 routes.put("/rating/:id", ratingController.updateRating);
 routes.delete("/rating/:id", ratingController.deleteRating);
+routes.get("/averagerating/:id", ratingController.averageById);
+
+
 
 export default routes;

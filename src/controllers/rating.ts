@@ -138,6 +138,36 @@ const ratingController = {
             next(error);
         }
     },
-};
 
-export default ratingController;
+    async averageById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+
+            const averageRating = await prisma.rating.findMany({
+                where: {
+                    place_id: id
+                },
+                select: {
+                    general_rating: true
+                },                
+            });            
+            const data = averageRating.map(function(i:any){
+                return i.general_rating;
+            });
+
+            const initialValue = 0;
+            const sumWithInitial = data.reduce(
+              (accumulator, currentValue) => accumulator + currentValue,
+              initialValue
+            );
+
+            const average = sumWithInitial / averageRating.length
+
+                res.status(200).json(average);
+            } catch (error) {
+                next(error);
+            }
+        },
+    };
+
+    export default ratingController;
