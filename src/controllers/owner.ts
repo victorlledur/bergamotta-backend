@@ -6,7 +6,7 @@ import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
 
 const ownerController = {
   async verifyPassword(password: string) {
-    if(password){
+    if (password) {
       const hash = await bcrypt.hash(password, 10)
       return hash
     }
@@ -32,7 +32,7 @@ const ownerController = {
           id: newOwner.id,
           name: newOwner.name,
           email: newOwner.email,
-          password: newOwner.password
+          password: newOwner.password,
         }),
       })
     } catch (error) {
@@ -43,13 +43,13 @@ const ownerController = {
   async listOwners(req: Request, res: Response, next: NextFunction) {
     try {
       const list = await prisma.owner.findMany()
-      let newList = [{}];
+      let newList = [{}]
 
       for (const item in list) {
         const { passwordReset, passwordExpired, ...owner } = list[item]
         newList.push(owner)
       } //para não exibir a senha resete e expired
-      
+
       return res.status(200).json(newList)
     } catch (error) {
       return res.status(400).send({ error: error })
@@ -71,7 +71,7 @@ const ownerController = {
       }
 
       const { passwordReset, passwordExpired, ...owner } = ownerId //para não exibir a senha resete e expired
-      
+
       return res.status(200).json(owner)
     } catch (error) {
       return res.status(400).json({ error: error })
@@ -87,23 +87,26 @@ const ownerController = {
           id,
         },
       })
-      
+
       if (!ownerId) {
         return res.status(404).json("This ID doesn't exist")
       }
 
-      if(req.body.email){
+      if (req.body.email) {
         if (await verifyEmail(req.body.email))
           return res.status(400).send({ message: 'This email already exists' })
       }
-        
+
       await prisma.owner.update({
         where: {
           id,
         },
-        data: { ...req.body, password: await ownerController.verifyPassword(req.body.password)},
+        data: {
+          ...req.body,
+          password: await ownerController.verifyPassword(req.body.password),
+        },
       })
-      
+
       return res.status(200).json({
         ownerId,
         token: decodeAndGenerateToken.generateToken({
@@ -112,7 +115,7 @@ const ownerController = {
           email: ownerId.email,
           password: ownerId.password,
           passwordReset: ownerId.passwordReset,
-          passwordExpired: ownerId.passwordExpired
+          passwordExpired: ownerId.passwordExpired,
         }),
       })
     } catch (error) {
@@ -145,7 +148,6 @@ const ownerController = {
       return res.status(400).json({ error: error })
     }
   },
-
 }
 
 export default ownerController
