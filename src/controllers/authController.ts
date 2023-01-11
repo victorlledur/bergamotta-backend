@@ -2,18 +2,31 @@ import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import { prisma } from '../database/index'
 import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
+import userOrOwner from '../helpers/userOrOwner'
 
 const authController = {
-
+  
   async authUser(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body
 
-    const findUser = await prisma.owner.findUnique({
-      where: {
-        email,
-      },
-    })
 
+    let findUser: any
+
+        const status = await userOrOwner.byEmail( email )
+        if (!status) {
+          return res.status(401).send({ error: 'Not found' })
+        }
+        if (status === 'owner') {
+          findUser = await prisma.owner.findUnique({
+            where: { email },
+          })
+        }
+        if (status === 'user') {
+          findUser = await prisma.user.findUnique({
+            where: { email },
+          })
+        }
+        
     if (!findUser) {
       return res
         .status(403)

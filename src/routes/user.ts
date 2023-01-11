@@ -8,6 +8,6 @@ routes.post("/createuser", userController.createUser);
 routes.get("/users",  userController.listUsers);
 routes.get("/user/:id", validateToken.function, userController.byIdUser);
 routes.put("/user/:id", userController.updateUser);
-routes.delete("/user/:id", userController.deleteUser);
+routes.delete("/user/:id", validateToken.function, userController.deleteUser);
 
 export default routes;
