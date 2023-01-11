@@ -20,18 +20,29 @@ const filterController = {
 
             if (place_types_ids && place_types_ids.length > 0) {
                 place_types_ids.map((x: any) => {
-                    queryArgs = {
-                        // ...queryArgs,                        
+                    // Object.assign({}, queryArgs,  {
+                    //     // ...queryArgs,                        
+                    //     place_types: {
+                    //         some: {
+                    //             id: {
+                    //                 equals: x as string
+                    //             }
+                    //         }
+                    //     }
+                    // })
+                    queryArgs = 
+                    {
                         place_types: {
-                            some: {
+                            some:{
                                 id: {
                                     equals: x as string
                                 }
                             }
-                        }
+                            },
+                        ...queryArgs,                     
                     }
-
                 });
+                console.log(queryArgs)
             }
 
             if (Object.keys(queryArgs).length) {
@@ -40,7 +51,7 @@ const filterController = {
                 //     options:{}
                 // })
                 const places = await prisma.place.findMany({
-                    where: queryArgs
+                    where: {AND:[queryArgs]},
                     
                     // include: {
                     //     place_types: true
