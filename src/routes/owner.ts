@@ -2,7 +2,8 @@ import express from 'express'
 import ownerController from '../controllers/owner'
 import authController from '../controllers/authController'
 import { validateToken } from '../middlewares/authToken'
-
+import { NextFunction, Request, Response } from 'express'
+// const validToken = new validateToken();
 const routes = express.Router()
 
 routes.post('/owner', ownerController.createOwner)

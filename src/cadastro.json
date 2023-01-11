@@ -1,0 +1,93 @@
+
+[
+	{
+		"name": "Carolina Kamilly Duarte",
+		"email": "carolina_duarte@systemsadvisers.com",
+		"password": "123456",
+		"image_link": "https://t4.ftcdn.net/jpg/05/41/66/29/240_F_541662964_HVrfnP5RxiHbQzq7C2OoX1YIWyLYtN0B.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Diogo Otávio Lopes",
+		"email": "diogo.otavio.lopes@sorocaba.com",
+		"password": "123456",
+		"image_link": "https://as1.ftcdn.net/v2/jpg/01/97/11/64/1000_F_197116416_hpfTtXSoJMvMqU99n6hGP4xX0ejYa4M7.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Gabriela Sônia Olivia Novaes",
+		"email": "gabriela_sonia_novaes@grupoitamaraty.com.br",
+		"password": "123456",
+		"image_link": "https://as2.ftcdn.net/v2/jpg/04/20/98/69/1000_F_420986909_eOE4Z9EI8KZJTQcU2wN2r7dtXsP4G10l.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Daniela Silvana Almada",
+		"email": "daniela_silvana_almada@transporteveloz.com.br",
+		"password": "123456",
+		"image_link": "https://as2.ftcdn.net/v2/jpg/05/47/15/13/1000_F_547151351_IbD7qaW3q5kNJrFN3ErW0DTqboVTgPLD.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Sara Emanuelly da Cunha",
+		"email": "sara-dacunha81@ficopola.net",
+		"password": "123456",
+		"image_link": "https://as2.ftcdn.net/v2/jpg/05/53/49/73/1000_F_553497381_JxqizgUpWUyZFocLmCvsxcKwA6QNUfJO.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Lavínia Sabrina Lorena Caldeira",
+		"email": "lavinia_caldeira@multieventos.art.br",
+		"password": "123456",
+		"image_link": "https://as2.ftcdn.net/v2/jpg/05/49/34/99/1000_F_549349984_8o06C8tdmDALBa6BdJ3jbQ5WfTyAqKxH.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Breno Heitor Ribeiro",
+		"email": "brenoheitorribeiro@vick1.com.br",
+		"password": "123456",
+		"image_link": "https://as1.ftcdn.net/v2/jpg/02/22/85/16/1000_F_222851624_jfoMGbJxwRi5AWGdPgXKSABMnzCQo9RN.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Mateus Theo da Luz",
+		"email": "mateus_theo_daluz@silnave.com.br",
+		"password": "123456",
+		"image_link": "https://as1.ftcdn.net/v2/jpg/02/68/77/20/1000_F_268772018_c4jJBONUHzGqUF6m1lBOy44EMSEMb0e3.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Henry Matheus Carvalho",
+		"email": "henry-carvalho71@vivo.com.br",
+		"password": "123456",
+		"image_link": "https://as2.ftcdn.net/v2/jpg/03/19/49/41/1000_F_319494119_7oipyjtIT187nAQzvnEKvlI3UsEGFinD.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	},
+	{
+		"name": "Ian Mário Almeida",
+		"email": "ian.mario.almeida@hotmailo.com",
+		"password": "123456",
+		"image_link": "https://as1.ftcdn.net/v2/jpg/01/91/67/52/1000_F_191675274_IebQK5pVaGmgZvprpIevKIPTovsRZZJi.jpg",
+		"city": "São Paulo",
+		"state": "SP",
+        "country": "Brasil"
+	}
+]

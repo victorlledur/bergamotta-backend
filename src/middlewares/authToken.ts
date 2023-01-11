@@ -2,134 +2,86 @@ import jwt from 'jsonwebtoken'
 import { NextFunction, Request, Response } from 'express'
 const secret = process.env.SECRET_KEY as string
 import { prisma } from '../database/index'
+import userOrOwner from '../helpers/userOrOwner'
 
 export const validateToken = {
-  async userOrOwner(id: string): Promise<string | null> {
-    if (await prisma.user.count({ where: { id } })) {
-      return 'user'
+
+  viaHeadersOrParams: function(headersToken: string , paramsToken: string): string | null  {
+    if(headersToken){
+      return headersToken
     }
-    if (await prisma.owner.count({ where: { id } })) return 'owner'
+    if(paramsToken){
+      return paramsToken
+    }
     return null
   },
-  function(req: Request, res: Response, next: NextFunction) {
-    const headersToken = req.headers.authorization
-    const mailToken = req.params.token
 
-    if (!mailToken) {
-      try {
-        if (!headersToken) {
+  function(req: Request, res: Response, next: NextFunction) {
+    let headersToken: string
+
+    if (!req.params.token) {
+      
+        if (!req.headers.authorization) {
           return res.status(401).send({ error: 'No token provided!' })
         }
-        const parts = headersToken.split(' ')
+        const parts = req.headers.authorization.split(' ')
 
         if (!(parts.length === 2))
           return res.status(401).send({ error: 'Token invalid!' })
 
         const [scheme, token] = parts
-
+        headersToken = token
         if (!/^Bearer$/.test(scheme))
           return res.status(401).send({ error: 'Is not a bearer token' })
-        jwt.verify(token, secret, async (err: any, decoded: any) => {
-          const { id } = req.params
-          if (err) return res.status(401).send({ error: err.message })
+          
+      }
+      const token = validateToken.viaHeadersOrParams(headersToken!, req.params.token) as string
+    
+      jwt.verify(token, secret, async (err: any, decoded: any) => {
+      try {
+        const { id } = req.params
+        if (err) return res.status(401).send({ error: err.message })
 
-          try {
-            let find: any
+        let find: any
 
-            const status = await validateToken.userOrOwner(id)
-            if (!status) {
-              return res.status(401).send({ error: 'Not found' })
-            }
-            if (status === 'owner') {
-              find = await prisma.owner.findUnique({
-                where: { id: req.params.id },
-              })
-            }
-            if (status === 'user') {
-              find = await prisma.user.findUnique({
-                where: { id: req.params.id },
-              })
-            }
-            if (!find) return res.sendStatus(401)
+        const status = await userOrOwner.byId(id)
+        if (!status) {
+          return res.status(401).send({ error: 'Not found' })
+        }
+        if (status === 'owner') {
+          find = await prisma.owner.findUnique({
+            where: { id: req.params.id },
+          })
+        }
+        if (status === 'user') {
+          find = await prisma.user.findUnique({
+            where: { id: req.params.id },
+          })
+        }
+        if (!find) return res.sendStatus(401)
 
-            if (!decoded.id)
-              return res.status(401).send({ error: 'No ID available' })
+        if (!decoded.id)
+          return res.status(401).send({ error: 'No ID available' })
 
-            if (decoded.id !== id || decoded.email !== find.email)
-              return res.status(200).send({
-                error: 'This Token has not belong to the specified payload',
-              })
-          } catch (error: any) {
-            return res.status(401).send({ error: error.meta.message })
-          }
+        if (decoded.id !== id || decoded.email !== find.email)
+          return res.status(200).send({
+            error: 'This Token has not belong to the specified payload',
+          })
 
-          // if (findUser.password !== decoded.password) {
-          //   if (Number(findUser.passwordExpired) < Date.now()) {
-          //     return res.status(200).send({ error: 'password expired' })
-          //   }
-          //   return res.status(401).send({ error: 'password mismatch' })
-          // }
+        // if (findUser.password !== decoded.password) {
+        //   if (Number(findUser.passwordExpired) < Date.now()) {
+        //     return res.status(200).send({ error: 'password expired' })
+        //   }
+        //   return res.status(401).send({ error: 'password mismatch' })
+        // }
 
-          console.log('Authenticate via headers!')
+        console.log('Authenticate !')
 
-          return next()
-        })
+        return next()
       } catch (error: any) {
         return res.status(401).send({ error: error.message })
       }
-    } else {
-      jwt.verify(mailToken, secret, async (err: any, decoded: any) => {
-        try {
-         
-            const { id } = req.params
-            if (err) return res.status(401).send({ error: err.message })
-  
-            try {
-              let find: any
-  
-              const status = await validateToken.userOrOwner(id)
-              if (!status) {
-                return res.status(401).send({ error: 'Not found' })
-              }
-              if (status === 'owner') {
-                find = await prisma.owner.findUnique({
-                  where: { id: req.params.id },
-                })
-              }
-              if (status === 'user') {
-                find = await prisma.user.findUnique({
-                  where: { id: req.params.id },
-                })
-              }
-              if (!find) return res.sendStatus(401)
-  
-              if (!decoded.id)
-                return res.status(401).send({ error: 'No ID available' })
-  
-              if (decoded.id !== id || decoded.email !== find.email)
-                return res.status(200).send({
-                  error: 'This Token has not belong to the specified payload',
-                })
-            } catch (error: any) {
-              return res.status(401).send({ error: error.meta.message })
-            }
-  
-            // if (findUser.password !== decoded.password) {
-            //   if (Number(findUser.passwordExpired) < Date.now()) {
-            //     return res.status(200).send({ error: 'password expired' })
-            //   }
-            //   return res.status(401).send({ error: 'password mismatch' })
-            // }
-  
-            console.log('Authenticate via headers!')
-  
-            return next()
-          
-        } catch (error: any) {
-          return res.status(401).send({ error: error.message })
-        }
-        
-      })
-    }
+    })
   },
 }
+
