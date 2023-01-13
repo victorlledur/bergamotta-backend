@@ -7,7 +7,7 @@ const blogCommentController = {
 
     async createBlogComment(req: Request, res: Response, next: NextFunction) {
         try {
-            const { comment } = req.body;
+            const comment = req.body.comment;
             const dateComment = moment().tz("America/Asuncion")
             const isDst = dateComment.isDST()
 
@@ -18,14 +18,14 @@ const blogCommentController = {
             const recipe_id = req.params.id    //trocar para body se precisar
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = user_id
+            // const decodedId = user_id
 
             const newUser = await prisma.blog_comment.create({
                 data: {
                     comment: comment,
                     date: moment().tz("America/Sao_Paulo").format(),
                     recipe_id: recipe_id,
-                    user_id: decodedId.id
+                    user_id: user_id
                 }
             });
 
