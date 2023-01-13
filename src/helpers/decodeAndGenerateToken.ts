@@ -10,9 +10,9 @@ const decodeAndGenerateToken = {
 
     decodedToken: function(token: string){
       const parts = token.split(' ')
-
         const [scheme, newToken] = parts
-      return jwt.decode(newToken) as jwt.JwtPayload
+        return newToken
+      // return jwt.decode(newToken) as jwt.JwtPayload
     }
 }
 
