@@ -10,7 +10,6 @@ const recoverPassword = {
 
   async forgetPassword(req: Request, res: Response) {
     const { email } = req.body
-    console.log('email :>> ', email);
     try {
       let findUser: any
 

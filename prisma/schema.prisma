@@ -132,7 +132,7 @@ model Recipe {
 model Blog_comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   comment   String
-  date      DateTime
+  date      String
   recipe_id String   @db.ObjectId
   recipe    Recipe   @relation(fields: [recipe_id], references: [id])
   user_id   String   @db.ObjectId

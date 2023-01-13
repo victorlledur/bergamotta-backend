@@ -1,26 +1,38 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
-
+import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
+import moment from "moment-timezone";
 
 const blogCommentController = {
 
     async createBlogComment(req: Request, res: Response, next: NextFunction) {
         try {
-            const { comment, date, recipe_id, user_id } = req.body;
-                
+            const { comment } = req.body;
+            const dateComment = moment().tz("America/Asuncion")
+            const isDst = dateComment.isDST()
+
+            if(isDst){
+                dateComment.subtract(1, "hours")
+            }
+            
+            const recipe_id = req.params.id    
+            const token = req.headers.authorization as string
+            const user_id = decodeAndGenerateToken.decodedToken(token)
+            const decodedId = user_id
 
             const newUser = await prisma.blog_comment.create({
                 data: {
                     comment: comment,
-                    date: date,
+                    date: moment().tz("America/Sao_Paulo").format(),
                     recipe_id: recipe_id,
-                    user_id: user_id
+                    user_id: decodedId.id
                 }
             });
 
             res.status(201).json(newUser)
 
         } catch (error) {
+            console.error(error)
             next(error)
         }
     },
@@ -28,6 +40,9 @@ const blogCommentController = {
     async listBlogComment(req: Request, res: Response, next: NextFunction) {
         try {
             const listBlogComment = await prisma.blog_comment.findMany();
+            listBlogComment.map((comment) => {
+                comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss") 
+            })
             res.status(200).json(listBlogComment);
         } catch (error) {
             next(error);
@@ -48,8 +63,10 @@ const blogCommentController = {
             if (!blogComment) {
                 res.status(404).json("User not found")
             };
-
-            res.status(200).json(blogComment)
+            const newBlogComment = {...blogComment}
+            newBlogComment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss") 
+           
+            res.status(200).json(newBlogComment)
 
         } catch (error) {
             next(error)
@@ -59,7 +76,7 @@ const blogCommentController = {
     async updateBlogComment(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const { comment, date, recipe_id, user_id } = req.body;
+            const { comment } = req.body;
 
             const blogComment = await prisma.blog_comment.findUnique({
                 where: {
@@ -76,15 +93,13 @@ const blogCommentController = {
                     id,
                 },
                 data: {
-                    comment,
-                    date,
-                    recipe_id,
-                    user_id
+                    comment
                 },
             });
 
             res.status(200).json({ result: updated})
         } catch (error) {
+            console.error(error);
             next(error)
 
         }

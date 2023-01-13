@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express'
 const secret = process.env.SECRET_KEY as string
 import { prisma } from '../database/index'
 import userOrOwner from '../helpers/userOrOwner'
+import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
 
 export const validateToken = {
 
@@ -36,7 +37,11 @@ export const validateToken = {
           
       }
       const token = validateToken.viaHeadersOrParams(headersToken!, req.params.token) as string
-    
+      console.log('token :>> ', token);
+      const decodedToken = decodeAndGenerateToken.decodedToken(token)
+      
+      console.log('decodedToken ID :>> ', decodedToken.id);
+
       jwt.verify(token, secret, async (err: any, decoded: any) => {
       try {
         const { id } = req.params

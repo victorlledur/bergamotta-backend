@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
+import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
 import getCoordinates from "../helpers/geocoding";
 
 
@@ -8,16 +9,20 @@ const placeController = {
 
     async createPlace(req: Request, res: Response, next: NextFunction) {
         try {
-            const { owner_id, name, place_types, food_types, place_profiles, city, state, country, zipcode, district, street, place_number, complement, image_link,
+            const token = req.headers.authorization as string
+            const owner_id = decodeAndGenerateToken.decodedToken(token)
+            const decodedId = owner_id
+            
+            const {  name, place_types, food_types, place_profiles, city, state, country, zipcode, district, street, place_number, complement, image_link,
                 capacity, description, phone,average_ticket_price, social_media, opening_hours, payment, } = req.body;
                                     
                 const coordenates: Array<string> = await getCoordinates(`${place_number} ${street} ${city} ${state} ${country}`)
                 const lat = `${coordenates[0]}`;
                 const lon = `${coordenates[1]}`;
-
+                
             const newPlace = await prisma.place.create({
                 data: {
-                    owner_id: owner_id,
+                    owner_id: decodedId.id,
                     name: name,
                     place_types: {
                         connect:
@@ -100,8 +105,12 @@ const placeController = {
     async updatePlace(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const { owner_id, name, place_types_ids, food_types_ids, place_profiles_ids, city, state, country, zipcode, district, street, place_number, complement, image_link,
+            const { name, place_types_ids, food_types_ids, place_profiles_ids, city, state, country, zipcode, district, street, place_number, complement, image_link,
                 capacity, description, phone, average_ticket_price, social_media, opening_hours, payment, latitude, longitude } = req.body;
+            
+            const token = req.headers.authorization as string
+            const owner_id = decodeAndGenerateToken.decodedToken(token)
+            const decodedId = owner_id
 
             const place = await prisma.place.findUnique({
                 where: {
@@ -118,7 +127,7 @@ const placeController = {
                     id,
                 },
                 data: {
-                    owner_id,
+                    owner_id: decodedId.id,
                     name,
                     place_types_ids,
                     food_types_ids,
