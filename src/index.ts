@@ -10,6 +10,7 @@ async function main() {
     app.use(express.json());
     app.use(requestLog);
     app.use(cors())
+    app.options("/authentication", cors())
 
     const port = process.env.PORT?( process.env.PORT as unknown as number) : 4000;
     
