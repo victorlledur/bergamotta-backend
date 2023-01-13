@@ -15,7 +15,7 @@ const blogCommentController = {
                 dateComment.subtract(1, "hours")
             }
             
-            const recipe_id = req.params.id    
+            const recipe_id = req.params.id    //trocar para body se precisar
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
             const decodedId = user_id

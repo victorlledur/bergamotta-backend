@@ -1,9 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
+import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
 
 const ratingController = {
     async createRating(req: Request, res: Response, next: NextFunction) {
         try {
+            const token = req.headers.authorization as string
+            const user_id = decodeAndGenerateToken.decodedToken(token)
+            const decodedId = user_id    
+
             const {
                 general_rating,
                 welcoming_service,
@@ -13,7 +18,6 @@ const ratingController = {
                 cozy,
                 service_speed,
                 comment,
-                user_id,
                 place_id,
             } = req.body;
 
@@ -27,13 +31,14 @@ const ratingController = {
                     cozy: cozy,
                     service_speed: service_speed,
                     comment: comment,
-                    user_id: user_id,
+                    user_id: decodedId.id,
                     place_id: place_id,
                 },
             });
 
             res.status(201).json(newRating);
         } catch (error) {
+            console.error(error);
             next(error);
         }
     },
@@ -69,7 +74,10 @@ const ratingController = {
 
     async updateRating(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id } = req.params;
+            const token = req.headers.authorization as string
+            const user_id = decodeAndGenerateToken.decodedToken(token)
+            const decodedId = user_id
+            // const { id } = req.params;
             const {
                 general_rating,
                 welcoming_service,
@@ -78,22 +86,27 @@ const ratingController = {
                 tasty_food,
                 cozy,
                 service_speed,
-                comment,
+                comment
             } = req.body;
 
-            const rating = await prisma.rating.findUnique({
+            const rating = await prisma.rating.findMany({
                 where: {
-                    id,
+                    user_id: decodedId.id,
                 },
             });
 
             if (!rating) {
                 res.status(400).json("Rating not found");
             }
+            console.log('rating :>> ', rating);
+
+            const filterUserRating = rating.filter((rating) =>{
+                return rating.place_id === req.body.place_id
+            })
 
             const update = await prisma.rating.update({
                 where: {
-                    id,
+                    id: filterUserRating[0].id,
                 },
                 data: {
                     general_rating,
@@ -109,6 +122,7 @@ const ratingController = {
 
             res.status(200).json({ result: update });
         } catch (error) {
+            console.log(error)
             next(error);
         }
     },

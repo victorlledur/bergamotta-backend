@@ -63,7 +63,7 @@ const favoritesController = {
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
             const decodedId = user_id
-            console.log('user_id :>> ', user_id);
+            
             const favorites = await prisma.favorites.findMany({
                 where: {
                     user_id: decodedId.id,
