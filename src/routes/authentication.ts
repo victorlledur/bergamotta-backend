@@ -4,7 +4,7 @@ import authControllerUser from "../controllers/authControllerUser";
 
 const routes = express.Router();
 
-routes.post("/owner-authentication", authControllerOwner.authOwner)
-routes.post("/user-authentication", authControllerUser.authUser)
+routes.post("/ownerauthentication", authControllerOwner.authOwner)
+routes.post("/userauthentication", authControllerUser.authUser)
 
 export default routes;
