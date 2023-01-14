@@ -136,10 +136,20 @@ const blogCommentController = {
         try {
             const recipe_id = req.params
 
+            console.log(recipe_id.id)
+
             const listBlogComment = await prisma.blog_comment.findMany({
                 where:{
-                    recipe_id: recipe_id
-                }
+                    recipe_id: recipe_id.id
+                }, 
+                include:{
+                    user: {
+                        select: {
+                            name: true,
+                            image_link: true
+                        }
+                    }
+                },
             });
             listBlogComment.map((comment) => {
                 comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss") 
@@ -149,7 +159,6 @@ const blogCommentController = {
             next(error);
         }
     },
-
     
 }
 
