@@ -10,7 +10,7 @@ routes.get("/favorite/:id", favoritesController.byIdFavorite);
 routes.put("/favorite/:id", favoritesController.updatefavorite);
 routes.delete("/favorite/:id", favoritesController.deleteFavorite);
 
-routes.get("/userfavorite", favoritesController.userFavoriteById)
+routes.get("/userfavorite/:id", favoritesController.userFavoriteById)
 routes.get("/userfavorites", favoritesController.userFavoritesById)
 routes.delete("/favorite/:place_id", favoritesController.deleteFavorite);
 
