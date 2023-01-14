@@ -11,7 +11,6 @@ const placeController = {
         try {
             const token = req.headers.authorization as string
             const owner_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = owner_id
             
             const {  name, place_types, food_types, place_profiles, city, state, country, zipcode, district, street, place_number, complement, image_link,
                 capacity, description, phone,average_ticket_price, social_media, opening_hours, payment, } = req.body;
@@ -22,7 +21,7 @@ const placeController = {
                 
             const newPlace = await prisma.place.create({
                 data: {
-                    owner_id: decodedId.id,
+                    owner_id: owner_id,
                     name: name,
                     place_types: {
                         connect:
@@ -110,7 +109,6 @@ const placeController = {
             
             const token = req.headers.authorization as string
             const owner_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = owner_id
 
             const place = await prisma.place.findUnique({
                 where: {
@@ -127,7 +125,7 @@ const placeController = {
                     id,
                 },
                 data: {
-                    owner_id: decodedId.id,
+                    owner_id: owner_id,
                     name,
                     place_types_ids,
                     food_types_ids,

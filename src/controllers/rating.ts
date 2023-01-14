@@ -7,7 +7,6 @@ const ratingController = {
         try {
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = user_id    
 
             const {
                 general_rating,
@@ -31,7 +30,7 @@ const ratingController = {
                     cozy: cozy,
                     service_speed: service_speed,
                     comment: comment,
-                    user_id: decodedId.id,
+                    user_id: user_id,
                     place_id: place_id,
                 },
             });
@@ -76,7 +75,6 @@ const ratingController = {
         try {
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = user_id
             // const { id } = req.params;
             const {
                 general_rating,
@@ -91,7 +89,7 @@ const ratingController = {
 
             const rating = await prisma.rating.findMany({
                 where: {
-                    user_id: decodedId.id,
+                    user_id: user_id,
                 },
             });
 

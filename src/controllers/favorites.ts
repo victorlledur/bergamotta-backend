@@ -10,11 +10,10 @@ const favoritesController = {
             const { place_id } = req.body;
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = user_id    
 
             const newUser = await prisma.favorites.create({
                 data: {
-                    user_id: decodedId.id,
+                    user_id: user_id,
                     place_id: place_id
                 }
             });
@@ -62,11 +61,10 @@ const favoritesController = {
             
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = user_id
             
             const favorites = await prisma.favorites.findMany({
                 where: {
-                    user_id: decodedId.id,
+                    user_id: user_id,
                 }
             });
 
@@ -85,11 +83,10 @@ const favoritesController = {
         try {
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = user_id
             
             const favorite = await prisma.favorites.findMany({
                 where: {
-                    user_id: decodedId.id
+                    user_id: user_id
                 }
             });
 
@@ -145,11 +142,10 @@ const favoritesController = {
         try {
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            const decodedId = user_id
 
             const favorite = await prisma.favorites.findMany({
                 where: {
-                    user_id: decodedId.id
+                    user_id: user_id
                 }
             });
 
