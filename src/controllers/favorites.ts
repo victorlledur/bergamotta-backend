@@ -91,7 +91,7 @@ const favoritesController = {
             });
 
             const filterUserFavorite = favorite.filter((favorite) =>{
-                return favorite.place_id === req.body.place_id
+                return favorite.place_id === req.params.place_id
             })
             
             if (!favorite) {
