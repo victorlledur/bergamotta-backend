@@ -132,6 +132,24 @@ const blogCommentController = {
         }
     },
 
+    async listBlogCommentsByRecipeId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const recipe_id = req.params
+
+            const listBlogComment = await prisma.blog_comment.findMany({
+                where:{
+                    recipe_id: recipe_id
+                }
+            });
+            listBlogComment.map((comment) => {
+                comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss") 
+            })
+            res.status(200).json(listBlogComment);
+        } catch (error) {
+            next(error);
+        }
+    },
+
     
 }
 
