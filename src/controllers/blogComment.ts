@@ -136,8 +136,6 @@ const blogCommentController = {
         try {
             const recipe_id = req.params
 
-            console.log(recipe_id.id)
-
             const listBlogComment = await prisma.blog_comment.findMany({
                 where:{
                     recipe_id: recipe_id.id
