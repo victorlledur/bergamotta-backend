@@ -15,5 +15,8 @@ routes.get("/instagrammablefood/:id", ratingController.instagrammableFoodById);
 routes.get("/tastyfood/:id", ratingController.tastyFoodById);
 routes.get("/cozy/:id", ratingController.cozyById);
 routes.get("/servicespeed/:id", ratingController.serviceSpeed);
+routes.get("/usercomment/:id", ratingController.RatingByPlaceId);
+
+
 
 export default routes;
