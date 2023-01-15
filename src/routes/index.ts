@@ -5,7 +5,7 @@ import ownerRoutes from "./owner";
 import authentication from "./authentication";
 import recipeRoutes from "./recipe"
 import ratingRoutes from "./rating"
-import blogCommentRoutes from "./blogComent"
+import blogCommentRoutes from "./blogComment"
 import favoritesRoutes from "./favorites"
 import recoverPassword from "./recoverPassword";
 import filter from "./filters"
