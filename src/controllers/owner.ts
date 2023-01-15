@@ -91,12 +91,7 @@ const ownerController = {
       if (!ownerId) {
         return res.status(404).json("This ID doesn't exist")
       }
-
-      if (req.body.email) {
-        if (await verifyEmail(req.body.email))
-          return res.status(400).send({ message: 'This email already exists' })
-      }
-
+      
       await prisma.owner.update({
         where: {
           id,

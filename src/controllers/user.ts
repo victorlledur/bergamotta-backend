@@ -95,12 +95,7 @@ const userController = {
     
           if (!userId) {
             return res.status(404).json("This ID doesn't exist")
-          }
-    
-          if (req.body.email) {
-            if (await verifyEmail(req.body.email))
-              return res.status(400).send({ message: 'This email already exists' })
-          }
+          }            
     
           await prisma.user.update({
             where: {
