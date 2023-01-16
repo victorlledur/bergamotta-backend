@@ -65,6 +65,16 @@ const favoritesController = {
             const favorites = await prisma.favorites.findMany({
                 where: {
                     user_id: user_id,
+                },
+                include: {
+                    place:{
+                        select:{
+                            image_link: true,
+                            name: true,
+                            opening_hours:true
+                            
+                        }
+                    }
                 }
             });
 
