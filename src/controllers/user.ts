@@ -85,40 +85,36 @@ const userController = {
 
     async updateUser(req: Request, res: Response, next: NextFunction) {
         try {
-          const { id } = req.params
+          const { id } = req.params;
     
-          const userId = await prisma.user.findUnique({
-            where: {
-              id,
-            },
-          })
+          const { name, email, password, image_link, city, state, country } = req.body;
+
+          const hash = await bcrypt.hash(password, 10);
     
-          if (!userId) {
+          if (!id) {
             return res.status(404).json("This ID doesn't exist")
-          }            
+          };         
     
-          await prisma.user.update({
+          const updated = await prisma.user.update({
             where: {
               id,
             },
             data: {
-              ...req.body,
-              password: await userController.verifyPassword(req.body.password),
+            name,
+            email,
+            password: hash,
+            image_link,
+            city,
+            state,
+            country,
             },
-          })
+          });
     
-          return res.status(200).json({
-            userId,
-            token: decodeAndGenerateToken.generateToken({
-              id: userId.id,
-              name: userId.name,
-              email: userId.email,
-              password: userId.password,
-              passwordReset: userId.passwordReset,
-              passwordExpired: userId.passwordExpired,
-            }),
-          })
-        } catch (error) {
+          return res.status(200).json(updated)
+        
+        }
+         catch (error) {
+           console.error(error)
           return res.status(400).json({ error: error })
         }
       },
