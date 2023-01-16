@@ -139,6 +139,9 @@ const blogCommentController = {
                 where:{
                     recipe_id: recipe_id.id
                 }, 
+                orderBy:{
+                    date: "desc",
+                },
                 include:{
                     user: {
                         select: {
