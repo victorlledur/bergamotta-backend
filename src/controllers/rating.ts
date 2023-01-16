@@ -402,7 +402,35 @@ const ratingController = {
             }
         },
 
-        
+        async RatingByUserId(req: Request, res: Response, next: NextFunction) {
+            try {
+                const user_id = req.params
+    
+                const listRatingComment = await prisma.rating.findMany({
+                    where:{ 
+                        user_id: user_id.id, 
+                    },                     
+                    include:{
+                        place: {
+                            select: {
+                                id: true,
+                                image_link: true,
+                                name: true,                                
+                            }
+                        }
+                    },
+                });
+                
+    
+                if (!listRatingComment) {
+                    res.status(404).json("Rating not found");
+                }
+    
+                res.status(200).json(listRatingComment);
+            } catch (error) {
+                next(error);
+            }
+        },        
     };
 
     export default ratingController;
