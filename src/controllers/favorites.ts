@@ -59,20 +59,20 @@ const favoritesController = {
     async userFavoritesById(req: Request, res: Response, next: NextFunction) {
         try {
             
-            const token = req.headers.authorization as string
-            const user_id = decodeAndGenerateToken.decodedToken(token)
+            const user_id = req.params.id
             
             const favorites = await prisma.favorites.findMany({
                 where: {
-                    user_id: user_id,
+                    user_id,
                 },
                 include: {
                     place:{
                         select:{
+                            id: true,
                             image_link: true,
                             name: true,
-                            opening_hours:true
-                            
+                            opening_hours:true,
+                            average_ticket_price: true
                         }
                     }
                 }
@@ -81,10 +81,11 @@ const favoritesController = {
             if (!favorites) {
                 res.status(404).json("User not found")
             };
-
             res.status(200).json(favorites)
 
         } catch (error) {
+            console.log(req)
+            console.error(error)
             next(error)
         }
     },
