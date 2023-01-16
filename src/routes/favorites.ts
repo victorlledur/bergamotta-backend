@@ -11,7 +11,7 @@ routes.put("/favorite/:id", favoritesController.updatefavorite);
 routes.delete("/favorite/:id", favoritesController.deleteFavorite);
 
 routes.get("/userfavorite/:id", favoritesController.userFavoriteById)
-routes.get("/userfavorites", favoritesController.userFavoritesById)
+routes.get("/userfavorites/:id", favoritesController.userFavoritesById)
 routes.delete("/favorite/:place_id", favoritesController.deleteFavorite);
 
 export default routes;
