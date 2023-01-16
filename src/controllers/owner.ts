@@ -80,40 +80,37 @@ const ownerController = {
 
   async updateOwner(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
+      const { id } = req.params;
 
-      const ownerId = await prisma.owner.findUnique({
-        where: {
-          id,
-        },
-      })
+      const { name, email, password, image_link, cnpj, role,  city, state, country } = req.body;
 
-      if (!ownerId) {
+      const hash = await bcrypt.hash(password, 10);
+
+      if (!id) {
         return res.status(404).json("This ID doesn't exist")
-      }
-      
-      await prisma.owner.update({
+      };
+
+      const updated = await prisma.owner.update({
         where: {
           id,
         },
         data: {
-          ...req.body,
-          password: await ownerController.verifyPassword(req.body.password),
+          name,
+          email,
+          password: hash,
+          image_link,
+          cnpj,
+          role,
+          city,
+          state,
+          country,
         },
-      })
+      });
 
-      return res.status(200).json({
-        ownerId,
-        token: decodeAndGenerateToken.generateToken({
-          id: ownerId.id,
-          name: ownerId.name,
-          email: ownerId.email,
-          password: ownerId.password,
-          passwordReset: ownerId.passwordReset,
-          passwordExpired: ownerId.passwordExpired,
-        }),
-      })
-    } catch (error) {
+      return res.status(200).json(updated)
+
+    }
+    catch (error) {
       return res.status(400).json({ error: error })
     }
   },
