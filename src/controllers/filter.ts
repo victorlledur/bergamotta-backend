@@ -60,6 +60,24 @@ const filterController = {
             next(error);
         }
     },
+
+    async searchPlaces(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const query = req.params.q
+
+            const listPlaces = await prisma.place.findMany({
+                where: {
+                    name: {
+                        contains: query,
+                    }
+                }
+            });
+            res.status(200).json(listPlaces);
+        } catch (error) {
+            next(error);
+        }
+    },
 }
 
 export default filterController
