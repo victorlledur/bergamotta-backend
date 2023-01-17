@@ -5,7 +5,6 @@ import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
 const ratingController = {
     async createRating(req: Request, res: Response, next: NextFunction) {
         try {
-            const user_id = req.params.id
 
             const {
                 general_rating,
@@ -17,6 +16,7 @@ const ratingController = {
                 service_speed,
                 comment,
                 place_id,
+                user_id,
             } = req.body;
 
             const newRating = await prisma.rating.create({
