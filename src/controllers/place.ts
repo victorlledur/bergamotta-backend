@@ -180,6 +180,29 @@ const placeController = {
             next(error)
         }
     },
+
+    async placeByOwnerId(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const ownerId = req.params.id;
+
+            const place = await prisma.place.findFirst({
+                where: {
+                    owner_id: ownerId,
+                }
+            });
+
+            if (!place) {
+                res.status(404).json("Place not found")
+            };
+
+            res.status(200).json(place)
+
+        } catch (error) {
+            next(error)
+        }
+
+    },
 }
 
 
