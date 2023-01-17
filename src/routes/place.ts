@@ -15,4 +15,4 @@ routes.delete("/place/:id", placeController.deletePlace);
 
 routes.get("/placebyowner/:id", placeController.placeByOwnerId);
 
-export default routes;
+export default routes; 
