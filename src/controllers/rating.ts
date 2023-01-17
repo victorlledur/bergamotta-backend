@@ -72,9 +72,9 @@ const ratingController = {
 
     async updateRating(req: Request, res: Response, next: NextFunction) {
         try {
-            const token = req.headers.authorization as string
-            const user_id = decodeAndGenerateToken.decodedToken(token)
-            // const { id } = req.params;
+            
+            const user_id = req.params.id
+
             const {
                 general_rating,
                 welcoming_service,

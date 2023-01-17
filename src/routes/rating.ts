@@ -6,7 +6,7 @@ const routes = express.Router();
 routes.post("/createrating", ratingController.createRating);
 routes.get("/ratings", ratingController.listRatings);
 routes.get("/rating/:id", ratingController.byIdRating);
-routes.put("/rating", ratingController.updateRating);
+routes.put("/rating/:id", ratingController.updateRating);
 routes.delete("/rating/:id", ratingController.deleteRating);
 routes.get("/averagerating/:id", ratingController.averageById);
 routes.get("/welcomingservice/:id", ratingController.welcomingServiceById);
