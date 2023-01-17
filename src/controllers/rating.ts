@@ -5,8 +5,7 @@ import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
 const ratingController = {
     async createRating(req: Request, res: Response, next: NextFunction) {
         try {
-            const token = req.headers.authorization as string
-            const user_id = decodeAndGenerateToken.decodedToken(token)
+            const user_id = req.params.id
 
             const {
                 general_rating,
