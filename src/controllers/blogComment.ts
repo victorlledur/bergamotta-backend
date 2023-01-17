@@ -11,13 +11,13 @@ const blogCommentController = {
             const dateComment = moment().tz("America/Asuncion")
             const isDst = dateComment.isDST()
 
-            if(isDst){
+            if (isDst) {
                 dateComment.subtract(1, "hours")
             }
-            
+
             const recipe_id = req.params.id
             const token = req.headers.authorization as string
-            const {user_id} = req.body
+            const { user_id } = req.body
 
             const newUser = await prisma.blog_comment.create({
                 data: {
@@ -40,7 +40,7 @@ const blogCommentController = {
         try {
             const listBlogComment = await prisma.blog_comment.findMany();
             listBlogComment.map((comment) => {
-                comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss") 
+                comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss")
             })
             res.status(200).json(listBlogComment);
         } catch (error) {
@@ -62,9 +62,9 @@ const blogCommentController = {
             if (!blogComment) {
                 res.status(404).json("User not found")
             };
-            const newBlogComment = {...blogComment}
-            newBlogComment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss") 
-           
+            const newBlogComment = { ...blogComment }
+            newBlogComment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss")
+
             res.status(200).json(newBlogComment)
 
         } catch (error) {
@@ -96,7 +96,7 @@ const blogCommentController = {
                 },
             });
 
-            res.status(200).json({ result: updated})
+            res.status(200).json({ result: updated })
         } catch (error) {
             console.error(error);
             next(error)
@@ -136,13 +136,13 @@ const blogCommentController = {
             const recipe_id = req.params
 
             const listBlogComment = await prisma.blog_comment.findMany({
-                where:{
+                where: {
                     recipe_id: recipe_id.id
-                }, 
-                orderBy:{
+                },
+                orderBy: {
                     date: "desc",
                 },
-                include:{
+                include: {
                     user: {
                         select: {
                             name: true,
@@ -152,14 +152,14 @@ const blogCommentController = {
                 },
             });
             listBlogComment.map((comment) => {
-                comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss") 
+                comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss")
             })
             res.status(200).json(listBlogComment);
         } catch (error) {
             next(error);
         }
     },
-    
+
 }
 
 export default blogCommentController

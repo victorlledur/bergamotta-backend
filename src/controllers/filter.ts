@@ -12,7 +12,7 @@ const filterController = {
             let queryArgs: Prisma.PlaceFindManyArgs = {}
 
             if (place_types_ids && place_types_ids.length > 0) {
-                
+
                 queryArgs.where =
                 {
                     ...queryArgs.where,
@@ -22,7 +22,7 @@ const filterController = {
                 }
             }
             if (food_types_ids && food_types_ids.length > 0) {
-                
+
                 queryArgs.where =
                 {
                     ...queryArgs.where,
@@ -32,18 +32,18 @@ const filterController = {
                 }
             }
             if (place_profiles_ids && place_profiles_ids.length > 0) {
-                
+
                 queryArgs.where =
                 {
                     ...queryArgs.where,
                     place_profiles_ids: {
-                        hasEvery: place_profiles_ids                        
+                        hasEvery: place_profiles_ids
                     }
                 }
             }
 
             if (Object.keys(queryArgs).length) {
-                
+
                 const places = await prisma.place.findMany(queryArgs);
 
                 return res.status(200).json(places);

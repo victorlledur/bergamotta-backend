@@ -48,7 +48,7 @@ const ownerController = {
       for (const item in list) {
         const { passwordReset, passwordExpired, ...owner } = list[item]
         newList.push(owner)
-      } //para não exibir a senha resete e expired
+      }
 
       return res.status(200).json(newList)
     } catch (error) {
@@ -70,7 +70,7 @@ const ownerController = {
         return res.status(404).json("This ID doesn't exist")
       }
 
-      const { passwordReset, passwordExpired, ...owner } = ownerId //para não exibir a senha resete e expired
+      const { passwordReset, passwordExpired, ...owner } = ownerId
 
       return res.status(200).json(owner)
     } catch (error) {
@@ -82,7 +82,7 @@ const ownerController = {
     try {
       const { id } = req.params;
 
-      const { name, email, password, image_link, cnpj, role,  city, state, country } = req.body;
+      const { name, email, password, image_link, cnpj, role, city, state, country } = req.body;
 
       const hash = await bcrypt.hash(password, 10);
 

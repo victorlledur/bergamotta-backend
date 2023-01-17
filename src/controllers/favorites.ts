@@ -35,7 +35,7 @@ const favoritesController = {
 
     async byIdFavorite(req: Request, res: Response, next: NextFunction) {
         try {
-            
+
             const { id } = req.params;
 
             const favorite = await prisma.favorites.findUnique({
@@ -57,20 +57,20 @@ const favoritesController = {
 
     async userFavoritesById(req: Request, res: Response, next: NextFunction) {
         try {
-            
+
             const user_id = req.params.id
-            
+
             const favorites = await prisma.favorites.findMany({
                 where: {
                     user_id,
                 },
                 include: {
-                    place:{
-                        select:{
+                    place: {
+                        select: {
                             id: true,
                             image_link: true,
                             name: true,
-                            opening_hours:true,
+                            opening_hours: true,
                             average_ticket_price: true
                         }
                     }
@@ -93,17 +93,17 @@ const favoritesController = {
         try {
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
-            
+
             const favorite = await prisma.favorites.findMany({
                 where: {
                     user_id: user_id
                 }
             });
 
-            const filterUserFavorite = favorite.filter((favorite) =>{
+            const filterUserFavorite = favorite.filter((favorite) => {
                 return favorite.place_id === req.params.place_id
             })
-            
+
             if (!favorite) {
                 res.status(404).json("User not found")
             };
@@ -141,7 +141,7 @@ const favoritesController = {
                 },
             });
 
-            res.status(200).json({ result: updated})
+            res.status(200).json({ result: updated })
         } catch (error) {
             next(error)
 
@@ -159,7 +159,7 @@ const favoritesController = {
                 }
             });
 
-            const filterUserFavorite = favorite.filter((favorite) =>{
+            const filterUserFavorite = favorite.filter((favorite) => {
                 return favorite.place_id === req.params.place_id
             })
 
@@ -180,7 +180,7 @@ const favoritesController = {
         }
     },
 
-    
+
 }
 
 export default favoritesController;
