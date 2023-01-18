@@ -91,22 +91,20 @@ const favoritesController = {
         try {
             const token = req.headers.authorization as string
             const user_id = decodeAndGenerateToken.decodedToken(token)
+            const place_id = req.params.id
 
             const favorite = await prisma.favorites.findMany({
                 where: {
-                    user_id: user_id
+                    user_id: { in :user_id },
+                    place_id: { in: place_id }
                 }
-            });
-
-            const filterUserFavorite = favorite.filter((favorite) => {
-                return favorite.place_id === req.params.place_id
-            })
+            });           
 
             if (!favorite) {
                 res.status(404).json(ERRORS.CONTROLLERS.FAVORITES.FAV_NOT_FOUND)
             };
 
-            res.status(200).json(filterUserFavorite)
+            res.status(200).json(favorite)
 
         } catch (error) {
             next(error)
