@@ -7,8 +7,7 @@ const favoritesController = {
 
     async createFavorite(req: Request, res: Response, next: NextFunction) {
         try {
-            const { place_id } = req.body;
-            const user_id = req.params.id
+            const { place_id, user_id } = req.body;
 
             const newUser = await prisma.favorites.create({
                 data: {
