@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
 import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
-
+import { ERRORS } from "../constants/error";
 
 const favoritesController = {
 
@@ -45,7 +45,7 @@ const favoritesController = {
             });
 
             if (!favorite) {
-                res.status(404).json("User not found")
+                res.status(404).json(ERRORS.CONTROLLERS.FAVORITES.FAV_NOT_FOUND)
             };
 
             res.status(200).json(favorite)
@@ -78,13 +78,11 @@ const favoritesController = {
             });
 
             if (!favorites) {
-                res.status(404).json("User not found")
+                res.status(404).json(ERRORS.CONTROLLERS.FAVORITES.FAV_NOT_FOUND)
             };
             res.status(200).json(favorites)
 
         } catch (error) {
-            console.log(req)
-            console.error(error)
             next(error)
         }
     },
@@ -105,13 +103,12 @@ const favoritesController = {
             })
 
             if (!favorite) {
-                res.status(404).json("User not found")
+                res.status(404).json(ERRORS.CONTROLLERS.FAVORITES.FAV_NOT_FOUND)
             };
 
             res.status(200).json(filterUserFavorite)
 
         } catch (error) {
-            console.error(error)
             next(error)
         }
     },
@@ -128,7 +125,7 @@ const favoritesController = {
             });
 
             if (!favorite) {
-                res.status(400).json("User not found")
+                res.status(400).json(ERRORS.CONTROLLERS.FAVORITES.FAV_NOT_FOUND)
             };
 
             const updated = await prisma.favorites.update({
@@ -164,7 +161,7 @@ const favoritesController = {
             })
 
             if (!filterUserFavorite) {
-                res.status(404).json("User not found")
+                res.status(404).json(ERRORS.CONTROLLERS.FAVORITES.USER_NOT_FOUND)
             };
 
             await prisma.favorites.delete({

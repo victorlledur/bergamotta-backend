@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
 import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
 import getCoordinates from "../helpers/geocoding";
-
-
+import { ERRORS } from "../constants/error";
 
 const placeController = {
 
@@ -62,7 +61,6 @@ const placeController = {
             res.status(201).json(newPlace)
 
         } catch (error) {
-            console.log(error)
             next(error)
         }
     },
@@ -88,7 +86,7 @@ const placeController = {
             });
 
             if (!place) {
-                res.status(404).json("Place not found")
+                res.status(404).json(ERRORS.CONTROLLERS.PLACE.NOT_FOUND)
             };
 
             res.status(200).json(place)
@@ -113,7 +111,7 @@ const placeController = {
             });
 
             if (!place) {
-                res.status(400).json("Place not found")
+                res.status(400).json(ERRORS.CONTROLLERS.PLACE.NOT_FOUND)
             };
 
             const updated = await prisma.place.update({
@@ -165,7 +163,7 @@ const placeController = {
             });
 
             if (!place) {
-                res.status(404).json("Place not found")
+                res.status(404).json(ERRORS.CONTROLLERS.PLACE.NOT_FOUND)
             };
 
             await prisma.place.delete({
@@ -193,7 +191,7 @@ const placeController = {
             });
 
             if (!place) {
-                res.status(404).json("Place not found")
+                res.status(404).json(ERRORS.CONTROLLERS.PLACE.NOT_FOUND)
             };
 
             res.status(200).json(place)

@@ -9,6 +9,7 @@ import blogCommentRoutes from "./blogComment"
 import favoritesRoutes from "./favorites"
 import recoverPassword from "./recoverPassword";
 import filter from "./filters"
+
 const routes = Router();
 
 routes.use(placeRoutes);
@@ -21,6 +22,5 @@ routes.use(blogCommentRoutes);
 routes.use(favoritesRoutes);
 routes.use(recoverPassword);
 routes.use(filter);
-
 
 export default routes;

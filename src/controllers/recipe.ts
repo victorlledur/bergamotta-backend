@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
-
+import { ERRORS } from "../constants/error";
 
 const recipeController = {
 
@@ -50,7 +50,7 @@ const recipeController = {
             });
 
             if (!recipe) {
-                res.status(404).json("Recipe not found");
+                res.status(404).json(ERRORS.CONTROLLERS.RECIPE.NOT_FOUND);
             };
 
             res.status(200).json(recipe)
@@ -73,7 +73,7 @@ const recipeController = {
             });
 
             if (!recipe) {
-                res.status(400).json("Recipe not found");
+                res.status(400).json(ERRORS.CONTROLLERS.RECIPE.NOT_FOUND);
             };
 
             const update = await prisma.recipe.update({
@@ -109,7 +109,7 @@ const recipeController = {
             });
 
             if (!recipe) {
-                res.status(404).json("Place not found");
+                res.status(404).json(ERRORS.CONTROLLERS.RECIPE.NOT_FOUND);
             };
 
             await prisma.recipe.delete({

@@ -3,6 +3,7 @@ import { prisma } from '../database/index'
 import bcrypt from 'bcrypt'
 import verifyEmail from '../helpers/emailcheck'
 import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
+import { ERRORS } from '../constants/error'
 
 const ownerController = {
   async verifyPassword(password: string) {
@@ -18,7 +19,7 @@ const ownerController = {
       const { email, password } = req.body
 
       if (await verifyEmail(email))
-        return res.status(400).send({ message: 'This email already exists' })
+        return res.status(400).send({ message: ERRORS.CONTROLLERS.OWNER.EMAIL_EXIST })
 
       const hash = await bcrypt.hash(password, 10)
 
@@ -67,7 +68,7 @@ const ownerController = {
       })
 
       if (!ownerId) {
-        return res.status(404).json("This ID doesn't exist")
+        return res.status(404).json(ERRORS.CONTROLLERS.OWNER.NO_ID)
       }
 
       const { passwordReset, passwordExpired, ...owner } = ownerId
@@ -87,7 +88,7 @@ const ownerController = {
       const hash = await bcrypt.hash(password, 10);
 
       if (!id) {
-        return res.status(404).json("This ID doesn't exist")
+        return res.status(404).json(ERRORS.CONTROLLERS.OWNER.NO_ID)
       };
 
       const updated = await prisma.owner.update({
@@ -126,7 +127,7 @@ const ownerController = {
       })
 
       if (!ownerId) {
-        return res.status(404).json("This ID doesn't exist")
+        return res.status(404).json(ERRORS.CONTROLLERS.OWNER.NO_ID)
       }
 
       await prisma.owner.delete({

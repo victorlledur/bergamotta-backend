@@ -4,6 +4,7 @@ const secret = process.env.SECRET_KEY as string
 import { prisma } from '../database/index'
 import userOrOwner from '../helpers/userOrOwner'
 import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
+import { ERRORS } from '../constants/error'
 
 export const validateToken = {
 
@@ -23,25 +24,23 @@ export const validateToken = {
     if (!req.params.token) {
       
         if (!req.headers.authorization) {
-          return res.status(401).send({ error: 'No token provided!' })
+          return res.status(401).send({ error: ERRORS.MIDDLEWARES.AUTH.NO_TOKEN })
         }
         const parts = req.headers.authorization.split(' ')
 
         if (!(parts.length === 2))
-          return res.status(401).send({ error: 'Token invalid!' })
+          return res.status(401).send({ error: ERRORS.MIDDLEWARES.AUTH.INVALID })
 
         const [scheme, token] = parts
         headersToken = token
         if (!/^Bearer$/.test(scheme))
-          return res.status(401).send({ error: 'Is not a bearer token' })
+          return res.status(401).send({ error: ERRORS.MIDDLEWARES.AUTH.BEARER_CHECK })
           
       }
       const token = validateToken.viaHeadersOrParams(headersToken!, req.params.token) as string
       console.log('token :>> ', token);
       const decodedToken = decodeAndGenerateToken.decodedToken(token)
       
-      console.log('decodedToken ID :>> ', decodedToken.id);
-
       jwt.verify(token, secret, async (err: any, decoded: any) => {
       try {
         const { id } = req.params
@@ -51,7 +50,7 @@ export const validateToken = {
 
         const status = await userOrOwner.byId(id)
         if (!status) {
-          return res.status(401).send({ error: 'Not found' })
+          return res.status(401).send({ error: ERRORS.MIDDLEWARES.AUTH.FIND })
         }
         if (status === 'owner') {
           find = await prisma.owner.findUnique({
@@ -66,22 +65,13 @@ export const validateToken = {
         if (!find) return res.sendStatus(401)
 
         if (!decoded.id)
-          return res.status(401).send({ error: 'No ID available' })
+          return res.status(401).send({ error: ERRORS.MIDDLEWARES.AUTH.NO_ID })
 
         if (decoded.id !== id || decoded.email !== find.email)
           return res.status(200).send({
-            error: 'This Token has not belong to the specified payload',
+            error: ERRORS.MIDDLEWARES.AUTH.NOT_BELONG,
           })
-
-        // if (findUser.password !== decoded.password) {
-        //   if (Number(findUser.passwordExpired) < Date.now()) {
-        //     return res.status(200).send({ error: 'password expired' })
-        //   }
-        //   return res.status(401).send({ error: 'password mismatch' })
-        // }
-
-        console.log('Authenticate !')
-
+       
         return next()
       } catch (error: any) {
         return res.status(401).send({ error: error.message })

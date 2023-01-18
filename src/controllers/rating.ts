@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
+import { ERRORS } from "../constants/error";
 
 const ratingController = {
     async createRating(req: Request, res: Response, next: NextFunction) {
@@ -35,7 +36,6 @@ const ratingController = {
 
             res.status(201).json(newRating);
         } catch (error) {
-            console.error(error);
             next(error);
         }
     },
@@ -60,7 +60,7 @@ const ratingController = {
             });
 
             if (!rating) {
-                res.status(404).json("Rating not found");
+                res.status(404).json(ERRORS.CONTROLLERS.RATING.NOT_FOUND);
             }
 
             res.status(200).json(rating);
@@ -92,9 +92,8 @@ const ratingController = {
             });
 
             if (!rating) {
-                res.status(400).json("Rating not found");
+                res.status(400).json(ERRORS.CONTROLLERS.RATING.NOT_FOUND);
             }
-            console.log('rating :>> ', rating);
 
             const filterUserRating = rating.filter((rating) => {
                 return rating.place_id === req.body.place_id
@@ -118,7 +117,6 @@ const ratingController = {
 
             res.status(200).json({ result: update });
         } catch (error) {
-            console.log(error)
             next(error);
         }
     },
@@ -134,7 +132,7 @@ const ratingController = {
             });
 
             if (!rating) {
-                res.status(404).json("Place not found");
+                res.status(404).json(ERRORS.CONTROLLERS.RATING.NOT_FOUND);
             }
 
             await prisma.rating.delete({
@@ -371,7 +369,7 @@ const ratingController = {
         }
     },
 
-    async RatingByPlaceId(req: Request, res: Response, next: NextFunction) {
+    async ratingByPlaceId(req: Request, res: Response, next: NextFunction) {
         try {
             const place_id = req.params
 
@@ -391,7 +389,7 @@ const ratingController = {
 
 
             if (!listRatingComment) {
-                res.status(404).json("Rating not found");
+                res.status(404).json(ERRORS.CONTROLLERS.RATING.NOT_FOUND);
             }
 
             res.status(200).json(listRatingComment);
@@ -400,7 +398,7 @@ const ratingController = {
         }
     },
 
-    async RatingByUserId(req: Request, res: Response, next: NextFunction) {
+    async ratingByUserId(req: Request, res: Response, next: NextFunction) {
         try {
             const user_id = req.params
 
@@ -421,7 +419,7 @@ const ratingController = {
 
 
             if (!listRatingComment) {
-                res.status(404).json("Rating not found");
+                res.status(404).json(ERRORS.CONTROLLERS.RATING.NOT_FOUND);
             }
 
             res.status(200).json(listRatingComment);

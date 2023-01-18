@@ -5,6 +5,7 @@ import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
 import crypto from 'crypto'
 import { mailerConfig } from '../modules/mailer'
 import userOrOwner from '../helpers/userOrOwner'
+import { ERRORS } from '../constants/error'
 
 const recoverPassword = {
 
@@ -16,7 +17,7 @@ const recoverPassword = {
       const status = await userOrOwner.byEmail( email )
 
       if (!status) {
-        return res.status(401).send({ error: 'Not found' })
+        return res.status(401).send({ error: ERRORS.CONTROLLERS.RECOVER_PASSWORD.NOT_FOUND })
       }
 
       if (status === 'owner') {
@@ -66,7 +67,7 @@ const recoverPassword = {
         .createHash('sha256')
         .update(newHashPass)
         .digest('hex')
-      const passwordExpired = Date.now() + 1000 * 60 * 20 // password expira em 20 minutos
+      const passwordExpired = Date.now() + 1000 * 60 * 20 
       
       await prisma.user.update({
         where: {
@@ -110,7 +111,7 @@ const recoverPassword = {
       const status = await userOrOwner.byId( id )
 
       if (!status) {
-        return res.status(401).send({ error: 'Not found' })
+        return res.status(401).send({ error: ERRORS.CONTROLLERS.RECOVER_PASSWORD.NOT_FOUND })
       }
 
       if (status === 'owner') {
@@ -136,7 +137,7 @@ const recoverPassword = {
             return res.sendStatus(200)
           }
         } catch (error) {
-          return res.status(400).send({ error: 'a error occurred: ' + error })
+          return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
         }
       }
       if (status === 'user') {
@@ -162,12 +163,12 @@ const recoverPassword = {
             return res.sendStatus(200)
           }
         } catch (error) {
-          return res.status(400).send({ error: 'a error occurred: ' + error })
+          return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
         }
       }
       return res.status(200).json({ status: true })
     } catch (error) {
-      return res.status(400).send({ error: 'a error occurred: ' + error })
+      return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
     }
   },
 }

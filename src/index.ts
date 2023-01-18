@@ -4,6 +4,7 @@ import requestLog from "./middlewares/requestLog";
 import cors from "cors"
 import { prisma } from "./database/index";
 import routes from "./routes/";
+import { SUCCESS } from "./constants/success";
 
 async function main() {
     const app = express();
@@ -20,12 +21,12 @@ async function main() {
     
     try {
       await prisma.$connect();
-      console.log(`😄 Connected successfuly to the database!`);
+      console.log(`😄 ${SUCCESS.APP.CONNECT}`);
     } catch (error) {
-      console.log(`😕 Failed connecting to the database! Please check the logs`);
+      console.log(`😕 ${SUCCESS.APP.FAIL}`);
     }
     app.listen(port, async () => {
-      console.log(`🚀 Service started and listening at: http://127.0.0.1:${port}`);
+      console.log(`🚀 ${SUCCESS.APP.INFO} http://127.0.0.1:${port}`);
       
     });
   }

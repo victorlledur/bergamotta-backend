@@ -1,7 +1,6 @@
 import express from 'express'
 import ownerController from '../controllers/owner'
 import { validateToken } from '../middlewares/authToken'
-import { NextFunction, Request, Response } from 'express'
 
 const routes = express.Router()
 

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import authControllerOwner from "../controllers/authControllerOwner";
 import authControllerUser from "../controllers/authControllerUser";
 

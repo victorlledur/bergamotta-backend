@@ -3,6 +3,7 @@ import { prisma } from "../database/index";
 import bcrypt from "bcrypt"
 import verifyEmail from "../helpers/emailcheck"
 import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
+import { ERRORS } from "./../constants/error"
 
 const userController = {
   async verifyPassword(password: string) {
@@ -18,7 +19,7 @@ const userController = {
       const { email, password } = req.body
 
       if (await verifyEmail(email))
-        return res.status(400).send({ message: 'This email already exists' })
+        return res.status(400).send({ message: ERRORS.CONTROLLERS.USER.EMAIL_EXIST })
 
       const hash = await bcrypt.hash(password, 10)
 
@@ -52,7 +53,7 @@ const userController = {
       for (const item in listUsers) {
         const { passwordReset, passwordExpired, ...user } = listUsers[item]
         newList.push(user)
-      } //para não exibir a senha resete e expired
+      }
 
       return res.status(200).json(listUsers);
     } catch (error) {
@@ -71,11 +72,10 @@ const userController = {
       })
 
       if (!userId) {
-        return res.status(404).json("User not found")
+        return res.status(404).json(ERRORS.CONTROLLERS.USER.USER_NOT_FOUND)
       };
 
-      const { passwordReset, passwordExpired, ...user } = userId //para não exibir a senha resete e expired
-
+      const { passwordReset, passwordExpired, ...user } = userId
       return res.status(200).json(user)
     } catch (error) {
       return res.status(400).json({ error: error })
@@ -92,7 +92,7 @@ const userController = {
       const hash = await bcrypt.hash(password, 10);
 
       if (!id) {
-        return res.status(404).json("This ID doesn't exist")
+        return res.status(404).json(ERRORS.CONTROLLERS.USER.NO_ID)
       };
 
       const updated = await prisma.user.update({
@@ -129,7 +129,7 @@ const userController = {
       })
 
       if (!userId) {
-        return res.status(404).json("This ID doesn't exist")
+        return res.status(404).json(ERRORS.CONTROLLERS.USER.NO_ID)
       }
 
       await prisma.user.delete({

@@ -12,7 +12,7 @@ const decodeAndGenerateToken = {
       const parts = token.split(' ')
         const [scheme, newToken] = parts
         return newToken
-      // return jwt.decode(newToken) as jwt.JwtPayload
+      // return jwt.decode(newToken) as jwt.JwtPayload   // Comentado para possível uso futuro
     }
 }
 

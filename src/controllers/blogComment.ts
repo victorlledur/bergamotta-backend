@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { prisma } from "../database/index";
 import decodeAndGenerateToken from "../helpers/decodeAndGenerateToken";
 import moment from "moment-timezone";
+import { ERRORS } from "../constants/error";
 
 const blogCommentController = {
 
@@ -31,7 +32,6 @@ const blogCommentController = {
             res.status(201).json(newUser)
 
         } catch (error) {
-            console.error(error)
             next(error)
         }
     },
@@ -60,7 +60,7 @@ const blogCommentController = {
             });
 
             if (!blogComment) {
-                res.status(404).json("User not found")
+                res.status(404).json(ERRORS.CONTROLLERS.BLOG_COMMENTS.USER_NOT_FOUND)
             };
             const newBlogComment = { ...blogComment }
             newBlogComment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss")
@@ -84,7 +84,7 @@ const blogCommentController = {
             });
 
             if (!blogComment) {
-                res.status(400).json("User not found")
+                res.status(400).json(ERRORS.CONTROLLERS.BLOG_COMMENTS.USER_NOT_FOUND)
             };
 
             const updated = await prisma.blog_comment.update({
@@ -98,7 +98,6 @@ const blogCommentController = {
 
             res.status(200).json({ result: updated })
         } catch (error) {
-            console.error(error);
             next(error)
 
         }
@@ -115,7 +114,7 @@ const blogCommentController = {
             });
 
             if (!blog_comment) {
-                res.status(404).json("User not found")
+                res.status(404).json(ERRORS.CONTROLLERS.BLOG_COMMENTS.USER_NOT_FOUND)
             };
 
             await prisma.blog_comment.delete({
