@@ -93,7 +93,7 @@ const favoritesController = {
             const user_id = decodeAndGenerateToken.decodedToken(token)
             const place_id = req.params.id
 
-            const favorite = await prisma.favorites.findMany({
+            const favorite = await prisma.favorites.findFirst({
                 where: {
                     user_id: { in :user_id },
                     place_id: { in: place_id }
