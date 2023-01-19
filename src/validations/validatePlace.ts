@@ -18,7 +18,7 @@ export default validate({
         phone: Joi.string().required(),
         average_ticket_price: Joi.string().required(),
         social_link: Joi.string().required(),
-        opening_hours: Joi.number().required(),
+        opening_hours: Joi.string().required(),
         payment: Joi.string().required(),
         latitude: Joi.string(),
         longitude: Joi.string()    

@@ -1,9 +1,10 @@
 import express from "express";
 import placeController from "../controllers/place";
+import validatePlace from "../validations/validatePlace";
 
 const routes = express.Router();
 
-routes.post("/createplace", placeController.createPlace);
+routes.post("/createplace", validatePlace, placeController.createPlace);
 routes.get("/places", placeController.listPlaces);
 routes.get("/place/:id", placeController.byIdPlace);
 routes.put("/place/:id", placeController.updatePlace);
