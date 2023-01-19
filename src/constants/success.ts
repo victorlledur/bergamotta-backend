@@ -4,7 +4,6 @@ export const SUCCESS = {
     },
     APP: {
         CONNECT: "Connected successfuly to the database!",
-        FAIL: "Failed connecting to the database! Please check the logs",
         INFO: "Service started and listening at:"
     }
 }

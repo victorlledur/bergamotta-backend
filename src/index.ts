@@ -5,6 +5,7 @@ import cors from "cors"
 import { prisma } from "./database/index";
 import routes from "./routes/";
 import { SUCCESS } from "./constants/success";
+import { ERRORS } from "./constants/error";
 
 async function main() {
     const app = express();
@@ -23,7 +24,7 @@ async function main() {
       await prisma.$connect();
       console.log(`😄 ${SUCCESS.APP.CONNECT}`);
     } catch (error) {
-      console.log(`😕 ${SUCCESS.APP.FAIL}`);
+      console.log(`😕 ${ERRORS.INDEX.FAIL}`);
     }
     app.listen(port, async () => {
       console.log(`🚀 ${SUCCESS.APP.INFO} http://127.0.0.1:${port}`);

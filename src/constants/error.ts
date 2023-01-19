@@ -44,5 +44,8 @@ export const ERRORS = {
             PASSWORD_EXPIRED: "A senha fornecida expirou",
             PASSWORD_INCORRECT: "A senha fornecida está incorreta"
         }
+    },
+    INDEX: {
+        FAIL: "Failed connecting to the database! Please check the logs",
     }
 }
