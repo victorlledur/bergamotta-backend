@@ -38,8 +38,6 @@ export const validateToken = {
           
       }
       const token = validateToken.viaHeadersOrParams(headersToken!, req.params.token) as string
-      console.log('token :>> ', token);
-      const decodedToken = decodeAndGenerateToken.decodedToken(token)
       
       jwt.verify(token, secret, async (err: any, decoded: any) => {
       try {

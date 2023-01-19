@@ -6,7 +6,7 @@ import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
 import { ERRORS } from '../constants/error'
 
 const ownerController = {
-  async verifyPassword(password: string) {
+  async hasPassword(password: string) {
     if (password) {
       const hash = await bcrypt.hash(password, 10)
       return hash
@@ -85,8 +85,6 @@ const ownerController = {
 
       const { name, email, password, image_link, cnpj, role, city, state, country } = req.body;
 
-      const hash = await bcrypt.hash(password, 10);
-
       if (!id) {
         return res.status(404).json(ERRORS.CONTROLLERS.OWNER.NO_ID)
       };
@@ -98,7 +96,7 @@ const ownerController = {
         data: {
           name,
           email,
-          password: hash,
+          password: await ownerController.hasPassword(password),
           image_link,
           cnpj,
           role,

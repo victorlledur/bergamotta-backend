@@ -10,7 +10,7 @@ const authController = {
     const { email, password } = req.body
     
     let findOwner: any
-
+          
           findOwner = await prisma.owner.findUnique({
             where: { email },
           })

@@ -1,176 +1,176 @@
-import { NextFunction, Request, Response } from 'express'
-import { prisma } from '../database/index'
-import bcrypt from 'bcrypt'
-import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
-import crypto from 'crypto'
-import { mailerConfig } from '../modules/mailer'
-import userOrOwner from '../helpers/userOrOwner'
-import { ERRORS } from '../constants/error'
+// import { NextFunction, Request, Response } from 'express'
+// import { prisma } from '../database/index'
+// import bcrypt from 'bcrypt'
+// import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
+// import crypto from 'crypto'
+// import { mailerConfig } from '../modules/mailer'
+// import userOrOwner from '../helpers/userOrOwner'
+// import { ERRORS } from '../constants/error'
 
-const recoverPassword = {
+// const recoverPassword = {
 
-  async forgetPassword(req: Request, res: Response) {
-    const { email } = req.body
-    try {
-      let findUser: any
+//   async forgetPassword(req: Request, res: Response) {
+//     const { email } = req.body
+//     try {
+//       let findUser: any
 
-      const status = await userOrOwner.byEmail( email )
+//       const status = await userOrOwner.byEmail( email )
 
-      if (!status) {
-        return res.status(401).send({ error: ERRORS.CONTROLLERS.RECOVER_PASSWORD.NOT_FOUND })
-      }
+//       if (!status) {
+//         return res.status(401).send({ error: ERRORS.CONTROLLERS.RECOVER_PASSWORD.NOT_FOUND })
+//       }
 
-      if (status === 'owner') {
-        findUser = await prisma.owner.findUnique({
-          where: { email },
-        })
-        const newHashPass = crypto.randomBytes(20).toString('hex').substring(0,10)
-        const passwordReset = crypto
-          .createHash('sha256')
-          .update(newHashPass)
-          .digest('hex')
-        const passwordExpired = Date.now() + 1000 * 60 * 20 // password expira em 20 minutos
+//       if (status === 'owner') {
+//         findUser = await prisma.owner.findUnique({
+//           where: { email },
+//         })
+//         const newHashPass = crypto.randomBytes(20).toString('hex').substring(0,10)
+//         const passwordReset = crypto
+//           .createHash('sha256')
+//           .update(newHashPass)
+//           .digest('hex')
+//         const passwordExpired = Date.now() + 1000 * 60 * 20 // password expira em 20 minutos
         
-        await prisma.owner.update({
-          where: {
-            email,
-          },
-          data: {
-            passwordReset,
-            passwordExpired
-          },
-        })
+//         await prisma.owner.update({
+//           where: {
+//             email,
+//           },
+//           data: {
+//             passwordReset,
+//             passwordExpired
+//           },
+//         })
         
-        const token = decodeAndGenerateToken.generateToken({
-          id: findUser.id,
-          name: findUser.name,
-          email: findUser.email,
-          password: newHashPass,
-          passwordReset,
-          passwordExpired,
-        })
+//         const token = decodeAndGenerateToken.generateToken({
+//           id: findUser.id,
+//           name: findUser.name,
+//           email: findUser.email,
+//           password: newHashPass,
+//           passwordReset,
+//           passwordExpired,
+//         })
   
-        mailerConfig.mailer(token)
+//         mailerConfig.mailer(token)
   
-        return res.status(200).json({
-          findUser,
-          token,
-        })
-      }
+//         return res.status(200).json({
+//           findUser,
+//           token,
+//         })
+//       }
       
-      if (status === 'user') {
-        findUser = await prisma.user.findUnique({
-          where: { email },
-        })
-        const newHashPass = crypto.randomBytes(20).toString('hex').substring(0,10)
-      const passwordReset = crypto
-        .createHash('sha256')
-        .update(newHashPass)
-        .digest('hex')
-      const passwordExpired = Date.now() + 1000 * 60 * 20 
+//       if (status === 'user') {
+//         findUser = await prisma.user.findUnique({
+//           where: { email },
+//         })
+//         const newHashPass = crypto.randomBytes(20).toString('hex').substring(0,10)
+//       const passwordReset = crypto
+//         .createHash('sha256')
+//         .update(newHashPass)
+//         .digest('hex')
+//       const passwordExpired = Date.now() + 1000 * 60 * 20 
       
-      await prisma.user.update({
-        where: {
-          email,
-        },
-        data: {
-          passwordReset,
-          passwordExpired
-        },
-      })
+//       await prisma.user.update({
+//         where: {
+//           email,
+//         },
+//         data: {
+//           passwordReset,
+//           passwordExpired
+//         },
+//       })
       
-      const token = decodeAndGenerateToken.generateToken({
-        id: findUser.id,
-        name: findUser.name,
-        email: findUser.email,
-        password: newHashPass,
-        passwordReset,
-        passwordExpired,
-      })
+//       const token = decodeAndGenerateToken.generateToken({
+//         id: findUser.id,
+//         name: findUser.name,
+//         email: findUser.email,
+//         password: newHashPass,
+//         passwordReset,
+//         passwordExpired,
+//       })
 
-      mailerConfig.mailer(token)
+//       mailerConfig.mailer(token)
 
-      return res.status(200).json({
-        findUser,
-        token,
-      })
-      }
+//       return res.status(200).json({
+//         findUser,
+//         token,
+//       })
+//       }
       
-    } catch (error) {
-      return res.status(400).send({ error: error })
-    }
-  },
+//     } catch (error) {
+//       return res.status(400).send({ error: error })
+//     }
+//   },
 
-  async resetPassword(req: Request, res: Response) {
-    try {
-      const { password } = req.body
+//   async resetPassword(req: Request, res: Response) {
+//     try {
+//       const { password } = req.body
 
-      const { id } = req.params
-      let findUser: any
+//       const { id } = req.params
+//       let findUser: any
 
-      const status = await userOrOwner.byId( id )
+//       const status = await userOrOwner.byId( id )
 
-      if (!status) {
-        return res.status(401).send({ error: ERRORS.CONTROLLERS.RECOVER_PASSWORD.NOT_FOUND })
-      }
+//       if (!status) {
+//         return res.status(401).send({ error: ERRORS.CONTROLLERS.RECOVER_PASSWORD.NOT_FOUND })
+//       }
 
-      if (status === 'owner') {
-        findUser = await prisma.owner.findUnique({
-          where: { id: req.params.id },
-        })
+//       if (status === 'owner') {
+//         findUser = await prisma.owner.findUnique({
+//           where: { id: req.params.id },
+//         })
 
-        try {
-          if (req.method === 'PUT') {
-            const hash = await bcrypt.hash(password, 10)
+//         try {
+//           if (req.method === 'PUT') {
+//             const hash = await bcrypt.hash(password, 10)
     
-            await prisma.owner.update({
-              where: {
-                id,
-              },
+//             await prisma.owner.update({
+//               where: {
+//                 id,
+//               },
               
-              data: {
-                password: hash,
-                passwordReset: null,
-                passwordExpired: null
-              },
-            })
-            return res.sendStatus(200)
-          }
-        } catch (error) {
-          return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
-        }
-      }
-      if (status === 'user') {
-        findUser = await prisma.user.findUnique({
-          where: { id: req.params.id },
-        })
+//               data: {
+//                 password: hash,
+//                 passwordReset: null,
+//                 passwordExpired: null
+//               },
+//             })
+//             return res.sendStatus(200)
+//           }
+//         } catch (error) {
+//           return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
+//         }
+//       }
+//       if (status === 'user') {
+//         findUser = await prisma.user.findUnique({
+//           where: { id: req.params.id },
+//         })
 
-        try {
-          if (req.method === 'PUT') {
-            const hash = await bcrypt.hash(password, 10)
+//         try {
+//           if (req.method === 'PUT') {
+//             const hash = await bcrypt.hash(password, 10)
     
-            await prisma.user.update({
-              where: {
-                id,
-              },
+//             await prisma.user.update({
+//               where: {
+//                 id,
+//               },
               
-              data: {
-                password: hash,
-                passwordReset: null,
-                passwordExpired: null
-              },
-            })
-            return res.sendStatus(200)
-          }
-        } catch (error) {
-          return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
-        }
-      }
-      return res.status(200).json({ status: true })
-    } catch (error) {
-      return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
-    }
-  },
-}
+//               data: {
+//                 password: hash,
+//                 passwordReset: null,
+//                 passwordExpired: null
+//               },
+//             })
+//             return res.sendStatus(200)
+//           }
+//         } catch (error) {
+//           return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
+//         }
+//       }
+//       return res.status(200).json({ status: true })
+//     } catch (error) {
+//       return res.status(400).send({ error: `${ERRORS.CONTROLLERS.RECOVER_PASSWORD.ERROR}` + error })
+//     }
+//   },
+// }
 
-export default recoverPassword;
+// export default recoverPassword;

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 const mailerConfig = {
     
-    async mailer(token: string) {
+    async mailer(token: string, userOrOwner: string) {
         // let testAccount = await nodemailer.createTestAccount();
         const decoded = jwt.decode(token) as jwt.JwtPayload     
 
@@ -36,7 +36,7 @@ const mailerConfig = {
             <p> Você recebeu uma nova senha gerada automaticamente que expira em <b>20 minutos.</b> </p>
             <p> Nova senha: <b>${decoded.passwordReset}</b></p>
             <p> Para criar sua própria senha, clique no link abaixo: </p>
-            <a href= "http://localhost:${process.env.PORT}/users/reset-password/${decoded.id}/${token}"><b>Criar nova senha</b></a>`, // html body
+            <a href= "http://localhost:${process.env.PORT}/resetpassword-${userOrOwner}/${decoded.id}/${token}"><b>Criar nova senha</b></a>`, // html body
         });
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));

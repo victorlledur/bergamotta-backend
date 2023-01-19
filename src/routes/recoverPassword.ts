@@ -1,11 +1,18 @@
 import express from "express";
-import recoverPassword from "../controllers/recoverPassword";
+import recoverOwnerPassword from "../controllers/recoverOwnerPassword";
+import recoverUserPassword from "../controllers/recoverUserPassword";
 import { validateToken } from "../middlewares/authToken";
 
 const routes = express.Router();
 
-routes.put('/users/forgot-password', recoverPassword.forgetPassword)
-routes.get('/users/reset-password/:id/:token', validateToken.function, recoverPassword.resetPassword);
-routes.put('/users/reset-password/:id', validateToken.function, recoverPassword.resetPassword);
+//users routes
+routes.put('/forgetpassword-user', recoverUserPassword.forgetPassword)
+routes.get('/resetpassword-user/:id/:token', validateToken.function, recoverUserPassword.resetPassword);
+routes.put('/resetpassword-user/:id', validateToken.function, recoverUserPassword.resetPassword);
 
-export default routes;
+//owners routes
+routes.put('/forgetpassword-owner', recoverOwnerPassword.forgetPassword)
+routes.get('/resetpassword-owner/:id/:token', validateToken.function, recoverOwnerPassword.resetPassword);
+routes.put('/resetpassword-owner/:id', validateToken.function, recoverOwnerPassword.resetPassword);
+
+export default routes;  

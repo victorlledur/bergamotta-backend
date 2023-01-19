@@ -6,7 +6,7 @@ import decodeAndGenerateToken from '../helpers/decodeAndGenerateToken'
 import { ERRORS } from "./../constants/error"
 
 const userController = {
-  async verifyPassword(password: string) {
+  async hasPassword(password: string) {
     if (password) {
       const hash = await bcrypt.hash(password, 10)
       return hash
@@ -88,9 +88,8 @@ const userController = {
       const { id } = req.params;
 
       const { name, email, password, image_link, city, state, country } = req.body;
-
-      const hash = await bcrypt.hash(password, 10);
-
+      
+      console.log('userController.hasPassword(password) :>> ', userController.hasPassword(password));
       if (!id) {
         return res.status(404).json(ERRORS.CONTROLLERS.USER.NO_ID)
       };
@@ -102,7 +101,7 @@ const userController = {
         data: {
           name,
           email,
-          password: hash,
+          password: await userController.hasPassword(password),
           image_link,
           city,
           state,
@@ -113,7 +112,7 @@ const userController = {
       return res.status(200).json(updated)
 
     }
-    catch (error) {
+    catch (error: any) {
       return res.status(400).json({ error: error })
     }
   },
