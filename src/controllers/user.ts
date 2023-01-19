@@ -89,7 +89,6 @@ const userController = {
 
       const { name, email, password, image_link, city, state, country } = req.body;
       
-      console.log('userController.hasPassword(password) :>> ', userController.hasPassword(password));
       if (!id) {
         return res.status(404).json(ERRORS.CONTROLLERS.USER.NO_ID)
       };
