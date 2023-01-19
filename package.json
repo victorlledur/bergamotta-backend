@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only -r dotenv/config src/index.ts",
     "start": "npm run build && node -r dotenv/config dist/index.js",
-    "build": "tsc"
+    "build": "npm install && tsc"
   },
   "author": "Grupo 1 backend",
   "license": "ISC",
