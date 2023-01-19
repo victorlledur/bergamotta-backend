@@ -151,7 +151,7 @@ const blogCommentController = {
                 },
             });
             listBlogComment.map((comment) => {
-                comment.date = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD HH:mm:ss")
+                comment.date = moment(comment.date).tz("America/Sao_Paulo").format("DD-MM-YYYY HH:mm:ss")
             })
             res.status(200).json(listBlogComment);
         } catch (error) {
