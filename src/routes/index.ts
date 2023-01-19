@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import placeRoutes from "./place";
 import userRoutes from "./user";
 import ownerRoutes from "./owner";
@@ -9,8 +9,13 @@ import blogCommentRoutes from "./blogComment"
 import favoritesRoutes from "./favorites"
 import recoverPassword from "./recoverPassword";
 import filter from "./filters"
+import { SUCCESS } from "../constants/success";
 
 const routes = Router();
+
+routes.get("/", (req:Request, res:Response) =>{
+    return res.json(SUCCESS.ROUTES.API);
+});
 
 routes.use(placeRoutes);
 routes.use(userRoutes);
