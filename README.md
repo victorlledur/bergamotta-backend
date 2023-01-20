@@ -3,7 +3,7 @@
   <img src="https://user-images.githubusercontent.com/87083551/213706040-3d181441-1d02-4670-a320-0ba45d383cf4.png" alt="drawing" width="180"/>
 
 <p align="center">
- <a href="#-English-version">🇺🇸 english translation after text</a> 
+ <a>🇺🇸 english translation after text</a> 
 </p>
 
 **💡 Aplicação criada no projeto de conclusão de curso da Gama Academy de desenvolvimento web.** 
@@ -15,7 +15,7 @@
 ⚙️ Dentro da aplicação é possível também se cadastrar, tanto como usuário, tecendo comentários e avaliações; quanto como estabelecimento tendo a possibilidade de trazer visibilidade e posicionamentos reais acerca de si. Conversar com a equipe Bergamotta através do link para o WhatsApp, e fazer parte da nossa comunidade pelo Telegram.
 
 ### Status
-⏳ Muitas funcionalidades foram deixadas em stand by devido ao tempo de entrega do projeto e a otimização do tempo. Poussui uma grande gama de possibilidades a serem desenvolvidas. 
+⏳ Muitas funcionalidades foram deixadas em stand by devido ao tempo de entrega do projeto e a otimização do tempo. Possui uma grande gama de possibilidades a serem desenvolvidas. 
 
 ---
 
@@ -34,6 +34,10 @@ Seguindo os aprendizados durante o curso, as seguintes ferramentas foram utitili
 - [Prisma](https://www.prisma.io)
 - [TypeScript](https://www.typescriptlang.org)
 - [MongoDB](https://www.mongodb.com)
+
+### 📑 Documentação
+
+Disponível no Postman: https://documenter.getpostman.com/view/23892793/2s8ZDX43Vy
 
 ---
 
@@ -57,10 +61,10 @@ Este projeto está sob a licença [MIT](./LICENSE.md).
 **💡 Application Programming Interface was created as the final project at Gama Adademy web development vocational course.** 
 
 ### About the project
-🍊 The goal was to create an application where it is possible to consult establishments focused on the vegan and veggie public. According to pre-selected filters, search bar, geolocation, and list search.
+🍊 The goal was to create an application where it is possible to consult places focused on the vegan and veggie public. According to pre-selected filters, search bar, geolocation, and list search.
 
 ### Features
-⚙️ Using the website, there are two possibilities for registration. It is possible to register as a user who makes comments and evaluates places and as a place that receives actual customer feedback and has an opportunity to bring more visibility. Contact the Bergamotta team using a link to WhatsApp or enjoy in the community by Telegram.
+⚙️ Using the website, there are two possibilities for registration. It is possible to register as an user who makes comments and evaluates places and as a place that receives actual customer feedback and has an opportunity to bring more visibility. Contact the Bergamotta team using a link to WhatsApp or enjoy in the community by Telegram.
 
 ### Status
 ⏳ Features applications were on backlog because of the final deadline and time management. There are a lot of possibilities to develop.  
@@ -83,6 +87,11 @@ According to the learning during the course, the following tools are used to cre
 - [Prisma](https://www.prisma.io)
 - [TypeScript](https://www.typescriptlang.org)
 - [MongoDB](https://www.mongodb.com)
+
+### 📑 Documentation
+
+
+Available at Postman: https://documenter.getpostman.com/view/23892793/2s8ZDX43Vy
 
 ---
   
