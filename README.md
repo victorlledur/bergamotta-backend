@@ -25,8 +25,6 @@ Criado pela equipe de UX/UI está disponível no Figma: https://www.figma.com/fi
 ### 🖥 Frontend
 Criado pela equipe de frontend, está disponível no seguinte repositório: https://github.com/elenbrodt/bergamotta_frontend
 
----
-
 ### 🛠 Tecnologias
 
 Seguindo os aprendizados durante o curso, as seguintes ferramentas foram utitilizadas para construção do BackEnd:
@@ -38,11 +36,11 @@ Seguindo os aprendizados durante o curso, as seguintes ferramentas foram utitili
 - [MongoDB](https://www.mongodb.com)
 
 ---
+
 ### 📝 Licença
 
 Este projeto está sob a licença [MIT](./LICENSE.md).
 
----
 
 #### Autor
  <sub><b>👩🏻‍💻Júlia Eduarda Alberton</b></sub></a>
@@ -52,7 +50,9 @@ Este projeto está sob a licença [MIT](./LICENSE.md).
 
 ---
 
-### 🇺🇸 English translation
+
+
+# 🇺🇸 English translation
 
 **💡 Application Programming Interface was created as the final project at Gama Adademy web development vocational course.** 
 
@@ -73,7 +73,6 @@ Created by UX/UI team is available at Figma: https://www.figma.com/file/9NXLJApz
 ### 🖥 Frontend
 Created by frontend team is available at the repository: https://github.com/elenbrodt/bergamotta_frontend
 
----
 
 ### 🛠 Technologies
 
@@ -86,11 +85,11 @@ According to the learning during the course, the following tools are used to cre
 - [MongoDB](https://www.mongodb.com)
 
 ---
+  
 ### 📝 License 
 
 This project are protect by [MIT](./LICENSE.md).
 
----
 
 #### Author
  <sub><b>👩🏻‍💻Júlia Eduarda Alberton</b></sub></a>
