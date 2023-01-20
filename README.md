@@ -1,10 +1,13 @@
 <p align="center">
 
   <img src="https://user-images.githubusercontent.com/87083551/213706040-3d181441-1d02-4670-a320-0ba45d383cf4.png" alt="drawing" width="180"/>
-
-<p align="center">
+  
+  <p align="center">
  <a>🇺🇸 english translation after text</a> 
 </p>
+  
+ ✨  [Bergamotta Website](https://bergamotta.vercel.app)
+
 
 **💡 Aplicação criada no projeto de conclusão de curso da Gama Academy de desenvolvimento web.** 
 
