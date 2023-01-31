@@ -7,6 +7,7 @@ export default validate({
         password: Joi.string().min(6).max(20).required(),
         image_link: Joi.string().required(),
         cnpj: Joi.string().required(),
+        role: Joi.string().required(),
         city: Joi.string().required(),
         state: Joi.string().required(),
         country: Joi.string().required()
