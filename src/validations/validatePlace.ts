@@ -3,7 +3,6 @@ import {validate, Joi} from 'express-validation';
 export default validate({
     body: Joi.object({
         name: Joi.string().required(),
-        email: Joi.string().email().required(),
         city: Joi.string().required(),
         state: Joi.string().required(),
         country: Joi.string().required(),
@@ -11,7 +10,7 @@ export default validate({
         district: Joi.string().required(),
         street: Joi.string().required(),
         place_number: Joi.string().required(),
-        complement: Joi.string(),
+        complement: Joi.string().allow(null, ''),
         image_link: Joi.string().required(),
         capacity: Joi.number().required(),
         description: Joi.string().required(),
